@@ -1,2 +1,3 @@
-izin:id
-root:12345
+izin
+root
+rizqi

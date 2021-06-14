@@ -43,7 +43,7 @@ struct user
 void message(char input[])
 {
     char buffer[1024];
-    sprintf(buffer, "%s", input);
+    sprintf(buffer, "%s\n", input);
     send(user_data.socket, buffer, 1024, 0);
 }
 
@@ -110,8 +110,18 @@ int login(char id[], char password[])
     return is_auth;
 }
 
-void catatLog() { //Fungsi Logging mencatat Log
-
+void catatLog(char argument[]) { //Fungsi Logging mencatat Log
+    time_t rawtime;
+    struct tm * timeinfo;
+    char time_now[26];
+    //dapatkan waktu sekarang
+    time( & rawtime);
+    timeinfo = localtime( & rawtime);
+    strftime(time_now, 26, "%F %H:%M:%S", timeinfo); 
+    FILE *fp;
+    fp = fopen("databases/running.log", "a+");
+    fprintf(fp, "\n%s:%s:%s", time_now, user_data.name, argument);
+    fclose(fp);
 }
 
 int permission(char database[]) { //Fungsi Untuk mengecek Authorisasi
@@ -125,15 +135,14 @@ int permission(char database[]) { //Fungsi Untuk mengecek Authorisasi
     int izin = 0;
     char buffer[1024];
     while (fgets(buffer, 1024, fp) != NULL && izin == 0) {
-        char file_id[1024], file_password[1024];
+        char file_id[1024];
         //Melakukan split file authorisasi
-        char *token = strtok(buffer, ":");
+        char *token = strtok(buffer, "\n");
         strcpy(file_id, token);
-        token = strtok(NULL, "\n");
-        strcpy(file_password, token);
+        //token = strtok(NULL, "\n");
 
         //Jika terdapat data user/password maka izinkan
-        if (strcmp(user_data.name, file_id) == 0 && strcmp(user_data.pwd, file_password) == 0) {
+        if (strcmp(user_data.name, file_id) == 0) {
             izin = 1;
         } else {    //Jika tidak ada, maka tidak berhak
             izin = 0;
@@ -206,17 +215,42 @@ void useDb(char query[]) {
         loop++;
     }
     if(permission(fname) == 1) { //mengecek apakah user diizinkan mengakses
-        if (DBExist(fname) == 1) { //Jika database ada
+        if (DBExist( fname) == 1) { //Jika database ada
             memset(user_data.setDb, 0, 1000);
             strcpy(user_data.setDb, fname);
-            sprintf(msg, "Database %s terpilih.\n", user_data.setDb);
+            sprintf(msg, "\nDatabase %s terpilih.", user_data.setDb);
             message(msg);
         } else {
-            message("Database tidak ada/tidak diizinkan mengakses");
+            message("\nDatabase tidak ada/tidak diizinkan mengakses");
         }
     } else {
-        message("Database tidak ada/tidak diizinkan mengakses");
+        message("\nDatabase tidak ada/tidak diizinkan mengakses");
     }
+}
+
+void ChangePermission(char query[]) {
+    int loop = 1;
+    char database[1024], nama[1024], folder[1024];
+    char t1[] = "GRANT PERMISSION ";
+    char t2[] = " INTO ";
+    //Lakukan split query yang digunakan
+    char *p = split_string(query, t1);
+    char *q = split_string(p, t2);
+    while ( q ) {
+        if(loop == 1) {
+            sprintf(database, "%s", q);
+        } else if(loop == 2) {
+            strtok(q, ";");
+            sprintf(nama, "%s", q);
+        }
+        q = split_string( NULL, t1 );
+        loop++;
+    }
+    sprintf(folder, "databases/%s/izin.txt", database);
+    //Input data query kedatabase auth
+    FILE *fp = fopen(folder, "a");
+    fprintf(fp, "\n%s", nama);
+    fclose(fp);
 }
 
 void loginsukses()
@@ -242,9 +276,19 @@ void loginsukses()
 
         //Kalau nambah query tinggal edit disini
         if (strcmp(cmd, "CREATE") == 0) { //Jika Query yang diinputkan CREATE
+            catatLog(buffer);
             create(buffer);
         } else if (strcmp(cmd, "USE") == 0) {
+            catatLog(buffer);
             useDb(buffer);
+        } else if (strcmp(cmd, "GRANT") == 0) {
+            if(strcmp(user_data.name, "root") == 0) {
+                catatLog(buffer);
+                ChangePermission(buffer);
+                message("Permission telah dirubah");
+            } else {
+                message("Anda tidak diizinkan untuk mengganti permission");
+            }
         } else {
             message("Query invalid");
         }
