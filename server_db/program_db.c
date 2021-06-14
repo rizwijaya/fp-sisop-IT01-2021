@@ -279,12 +279,59 @@ void ChangePermission(char query[]) {
     fclose(fp);
 }
 
+void dropDb(char query[]) {
+    int loop = 1;
+    char database[1024], msg[1024], folder[1024];
+    //Lakukan split query yang digunakan
+    char *p = strtok(query, " ");
+    while ( p ) {
+        if(loop == 3) {
+            strtok(p, ";");
+            sprintf(database, "%s", p);
+        }
+        p = strtok(NULL, " ");
+        loop++;
+    }
+    if (DBExist(database) == 1) { //Jika database ada
+        if(permission(database) == 1) { //mengecek apakah user diizinkan mengakses
+            sprintf(folder, "rm -r databases/%s", database);
+            system(folder);
+            message("\nDatabase berhasil dihapus.");
+        } else {
+            message("\nUser tidak diizinkan untuk menghapus."); 
+        }    
+    } else {
+        message("\nDatabase berhasil dihapus.");
+    }
+}
+
+void drop(char query[]) {
+    int loop = 1;
+    char tipe[1024], buffer[1024];
+    strcpy(buffer, query);
+    char* value = strtok(buffer, " ");
+    while (value != NULL) {
+        if (loop == 2) {
+            sprintf(tipe, "%s", value);
+        }
+        value = strtok(NULL, " ");
+		loop++;
+    }
+    if (strcmp(tipe, "DATABASE") == 0) { //Jika tipe adalah USER
+        dropDb(query);
+    } else if (strcmp(tipe, "COLUMN") == 0) {
+        createDb(query);
+    } else if (strcmp(tipe, "TABLE") == 0) {
+    
+    }
+}
+
 void loginsukses()
 {
     char msg[1024], buffer[1024], loc[1024];
     //Tampilkan pesan awal
     message("\e[1555557;1H\e[2J\n");
-    printf("\nUser %s telah berhasil login.", user_data.name);;
+    printf("\nUser %s telah berhasil login.", user_data.name);
     sprintf(msg, "Selamat datang, %s!\n", user_data.name);
     message(msg);
     sprintf(loc, "\ndb@%s: ", user_data.name);
@@ -315,6 +362,9 @@ void loginsukses()
             } else {
                 message("Anda tidak diizinkan untuk mengganti permission");
             }
+        } else if(strcmp(cmd, "DROP") == 0) {
+            catatLog(buffer);
+            drop(buffer);
         } else {
             message("Query invalid");
         }
