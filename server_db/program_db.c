@@ -176,6 +176,32 @@ void createUser(char query[]) {
     fclose(fp);
 }
 
+void createDb(char query[]) {
+    int loop = 1;
+    char database[1024], msg[1024], folder[1024], file[1024], isifile[1024];
+    //Lakukan split query yang digunakan
+    char *p = strtok(query, " ");
+    while ( p ) {
+        if(loop == 3) {
+            strtok(p, ";");
+            sprintf(database, "%s", p);
+        }
+        p = strtok(NULL, " ");
+        loop++;
+    }
+    //Buat folder database
+    sprintf(folder, "mkdir databases/%s", database);
+    system(folder);
+    //Buat Table/File izin.txt
+    sprintf(file, "touch databases/%s/izin.txt", database);
+    system(file);
+    //Isi Table/File izin.txt dengan heading izin dan kemudian nama user
+    sprintf(isifile, "databases/%s/izin.txt", database);
+    FILE *fp = fopen(isifile, "a");
+    fprintf(fp, "izin\n%s", user_data.name);
+    fclose(fp);
+}
+
 void create(char query[]) { //Fungsi cek CREATE yang digunakan
     int loop = 1;
     char tipe[1024], buffer[1024];
@@ -195,7 +221,7 @@ void create(char query[]) { //Fungsi cek CREATE yang digunakan
             message("User tidak diizinkan mengakses");
         }
     } else if (strcmp(tipe, "DATABASE") == 0) {
-        
+        createDb(query);
     } else if (strcmp(tipe, "TABLE") == 0) {
     
     }
