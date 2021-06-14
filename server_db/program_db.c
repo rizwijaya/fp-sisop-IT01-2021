@@ -15,7 +15,7 @@
 
 #define PORT 8080
 #define MAX_LENGTH 1000
-#define SVR "./FILES/"
+#define SVR "./databases/"
 
 pthread_t input, received;
 
@@ -34,6 +34,7 @@ struct user
     char pwd[1000];
     char file[1000];
     char mode[1000];
+    char setDb[1000];
     int is_auth;
     int socket;
 } user_data;
@@ -67,7 +68,21 @@ char * split_string( char *s, const char *delimiter )
 
     return t;
 }
-
+//Fungsi untuk mengecek apakah ada file diserver
+int DBExist(char fname[]){
+	int found = 0;
+	DIR *di;
+	struct dirent *dir;
+	di = opendir(SVR);
+	while ((dir = readdir(di)) != NULL){
+		if(strcmp(dir->d_name, fname)==0){
+			found=1;
+			break;
+		}
+	}
+	closedir(di);
+	return found;
+}
 //Fungsi untuk melakukan login
 int login(char id[], char password[])
 {
@@ -171,9 +186,36 @@ void create(char query[]) { //Fungsi cek CREATE yang digunakan
             message("User tidak diizinkan mengakses");
         }
     } else if (strcmp(tipe, "DATABASE") == 0) {
-    
+        
     } else if (strcmp(tipe, "TABLE") == 0) {
     
+    }
+}
+
+void useDb(char query[]) {
+    int loop = 1;
+    char fname[1024], msg[1024];
+    //Lakukan split query yang digunakan
+    char *p = strtok(query, " ");
+    while ( p ) {
+        if(loop == 2) {
+            strtok(p, ";");
+            sprintf(fname, "%s", p);
+        }
+        p = strtok(NULL, " ");
+        loop++;
+    }
+    if(permission(fname) == 1) { //mengecek apakah user diizinkan mengakses
+        if (DBExist(fname) == 1) { //Jika database ada
+            memset(user_data.setDb, 0, 1000);
+            strcpy(user_data.setDb, fname);
+            sprintf(msg, "Database %s terpilih.\n", user_data.setDb);
+            message(msg);
+        } else {
+            message("Database tidak ada/tidak diizinkan mengakses");
+        }
+    } else {
+        message("Database tidak ada/tidak diizinkan mengakses");
     }
 }
 
@@ -201,8 +243,10 @@ void loginsukses()
         //Kalau nambah query tinggal edit disini
         if (strcmp(cmd, "CREATE") == 0) { //Jika Query yang diinputkan CREATE
             create(buffer);
+        } else if (strcmp(cmd, "USE") == 0) {
+            useDb(buffer);
         } else {
-            message("invalid");
+            message("Query invalid");
         }
     }
 }
@@ -224,12 +268,13 @@ void *input_main()
             message(username);
             message(password);
             if (strcmp(username, "root") == 0 || strcmp(password, "12345") == 0) {
-                message("root");
+                //message("root");
                 user_data.is_auth = 1; //set auth
             } else {
                 user_data.is_auth = login(username, password);
                 if (user_data.is_auth == 2) {
-                    message("gagal");
+                    message("Login Gagal, Silahkan login ulang.");
+                    exit(EXIT_FAILURE);
                 } else if (user_data.is_auth == 1) {
                     loginsukses();
                 }
