@@ -83,6 +83,23 @@ int DBExist(char fname[]){
 	closedir(di);
 	return found;
 }
+//Fungsi untuk mengecek apakah ada table di database
+int TableExist(char table[]){
+    char folder[1024];
+	int found = 0;
+	DIR *di;
+	struct dirent *dir;
+    sprintf(folder, "databases/%s/", user_data.setDb);
+	di = opendir(folder);
+	while ((dir = readdir(di)) != NULL){
+		if(strcmp(dir->d_name, table)==0){
+			found=1;
+			break;
+		}
+	}
+	closedir(di);
+	return found;
+}
 //Fungsi untuk melakukan login
 int login(char id[], char password[])
 {
@@ -305,6 +322,34 @@ void dropDb(char query[]) {
     }
 }
 
+void dropTable(char query[]) {
+    int loop = 1;
+    char table[1024], msg[1024], folder[1024];
+    //Lakukan split query yang digunakan
+    char *p = strtok(query, " ");
+    while ( p ) {
+        if(loop == 3) {
+            strtok(p, ";");
+            sprintf(table, "%s", p);
+        }
+        p = strtok(NULL, " ");
+        loop++;
+    }
+
+    if(user_data.setDb != NULL) { //Jika db sudah di use
+        if (TableExist(table) == 1) { //Jika table ada
+            sprintf(folder, "rm -r databases/%s/%s.txt", user_data.setDb ,table);
+            system(folder);
+            message("\nTable berhasil dihapus.");  
+        } else {
+            message("\nTable berhasil dihapus.");
+        }
+    } else {
+        message("\nSilahkan set database terlebih dahulu.");
+    }
+
+}
+
 void drop(char query[]) {
     int loop = 1;
     char tipe[1024], buffer[1024];
@@ -319,9 +364,9 @@ void drop(char query[]) {
     }
     if (strcmp(tipe, "DATABASE") == 0) { //Jika tipe adalah USER
         dropDb(query);
-    } else if (strcmp(tipe, "COLUMN") == 0) {
-        createDb(query);
     } else if (strcmp(tipe, "TABLE") == 0) {
+        dropTable(query);
+    } else if (strcmp(tipe, "COLUMN") == 0) {
     
     }
 }
