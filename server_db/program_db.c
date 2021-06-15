@@ -177,6 +177,65 @@ void createUser(char query[]) {
     fclose(fp);
 }
 
+void remove_all_chars(char* str, char c) {
+    char *pr = str, *pw = str;
+    while (*pr) {
+        *pw = *pr++;
+        pw += (*pw != c);
+    }
+    *pw = '\0';
+}
+
+void createTable(const char* query){
+    // if setDb exist
+    if (strcmp(user_data.setDb, "kosong") != 0){
+
+        int loop = 1;
+        char tablePath[1024], tableName[1024], content[1024], tableData[1024], tableDataType[1024], buffer[1024];
+        memset(tableData, 0, sizeof tableData);
+        memset(tableDataType, 0, sizeof tableDataType);
+        
+        // ambil isi tabel
+        strcpy(buffer, query);
+        remove_all_chars(buffer, ','); 
+        char* value = strtok(buffer, " ");
+        while ( value != NULL) {
+            if (loop == 3) {
+                sprintf(tableName, "%s", value);
+            }
+            if (loop > 3 && !(loop%2)) {
+                if (loop != 4) strcat(tableData, ",");
+                strcat(tableData, value);
+            }
+            if (loop > 4 && (loop%2)) {
+                if (loop != 5) strcat(tableDataType, ",");
+                strcat(tableDataType, value);
+            }
+            value = strtok(NULL, " ");
+            loop++;
+        }
+        remove_all_chars(tableData, '(');
+        remove_all_chars(tableDataType, ')');
+
+        // set the file path and content
+        sprintf(tablePath, "touch databases/%s/%s.csv", user_data.setDb, tableName);
+        system(tablePath);
+        sprintf(tablePath, "databases/%s/%s.csv", user_data.setDb, tableName);
+        sprintf(content, "%s\n%s", tableData, tableDataType);
+        message(content);
+
+        // write to file
+        FILE *fp = fopen(tablePath, "w+");
+        fprintf(fp, "%s", content);
+        fclose(fp);
+        
+        // success message
+        message("\nTabel berhasil dibuat");
+    } else {
+        message("\nAnda belum memilih database");
+    }
+}
+
 void createDb(char query[]) {
     int loop = 1;
     char database[1024], msg[1024], folder[1024], file[1024], isifile[1024];
@@ -224,7 +283,7 @@ void create(char query[]) { //Fungsi cek CREATE yang digunakan
     } else if (strcmp(tipe, "DATABASE") == 0) {
         createDb(query);
     } else if (strcmp(tipe, "TABLE") == 0) { //Belum Selesai
-        //createTable(query);
+        createTable(query);
     }
 }
 
@@ -360,12 +419,12 @@ void loginsukses()
 {
     char msg[1024], buffer[1024], loc[1024];
     //Tampilkan pesan awal
-    message("\e[1555557;1H\e[2J\n");
+    // message("\e[1555557;1H\e[2J\n");
     printf("\nUser %s telah berhasil login.", user_data.name);
-    sprintf(msg, "Selamat datang, %s!\n", user_data.name);
+    sprintf(msg, "Selamat datang, %s!", user_data.name);
     message(msg);
-    sprintf(loc, "\ndb@%s: ", user_data.name);
-    message(loc);
+    // sprintf(loc, "db@%s: ", user_data.name);
+    // message(loc);
     //Lakukan loop hingga exit atau mode berubah
     while (strcmp(buffer, "exit") != 0 || strcmp(user_data.mode, "recvstrings") == 0)
     {
