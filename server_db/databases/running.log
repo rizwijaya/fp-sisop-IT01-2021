@@ -177,3 +177,86 @@
 2021-06-15 00:13:40:rizqi:USE yups
 2021-06-15 00:13:46:rizqi:CREATE TABLE dosen (id int, nama varchar, gender char, baju varchar, umur int, kucing varchar, sudah_haji int, sudah_baligh int)
 2021-06-15 00:14:44:rizqi:CREATE TABLE dosen (id int, nama varchar, gender char, baju varchar, umur int, kucing varchar, sudah_haji int, sudah_baligh int)
+2021-06-15 06:25:37:rizqi:USE yups
+2021-06-15 06:27:23:rizqi:USE
+2021-06-15 06:29:41:rizqi:USE yups
+2021-06-15 06:29:54:rizqi:CREATE TABLE dosen (id int, nama varchar, gender char)
+2021-06-15 06:31:00:rizqi:INSERT INTO dosen (1, 'ridho', 'male')
+2021-06-15 06:31:41:rizqi:INSERT INTO dosen (1, 'ridho', 'male')
+2021-06-15 06:35:30:rizqi:USE yups
+2021-06-15 06:35:50:rizqi:INSERT INTO dosen (1, 'ridho', 'male')
+2021-06-15 06:36:56:rizqi:INSERT INTO dosen (1, 'ridho', 'male')
+2021-06-15 06:37:09:rizqi:USE yups
+2021-06-15 06:37:14:rizqi:INSERT INTO dosen (1, 'ridho', 'male')
+2021-06-15 06:47:10:rizqi:INSERT INTO dosen (1, 'ridho', 'male')
+2021-06-15 06:47:28:rizqi:USE yups
+2021-06-15 06:47:33:rizqi:INSERT INTO dosen (1, 'ridho', 'male')
+2021-06-15 06:49:50:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 06:52:40:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 06:53:59:rizqi:USE yups
+2021-06-15 06:54:22:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 06:57:35:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 06:58:25:rizqi:USE yups
+2021-06-15 06:58:35:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 06:59:07:rizqi:USE yups
+2021-06-15 06:59:11:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 07:00:53:rizqi:USE yups
+2021-06-15 07:00:57:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 07:01:36:rizqi:USE yups
+2021-06-15 07:01:41:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 07:02:22:rizqi:USE yups
+2021-06-15 07:02:27:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 07:03:48:rizqi:USE yups
+2021-06-15 07:03:53:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 07:04:43:rizqi:USE yups
+2021-06-15 07:04:48:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 07:05:09:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 07:05:25:rizqi:USE yups
+2021-06-15 07:05:28:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 07:06:45:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 07:07:18:rizqi:USE yups
+2021-06-15 07:07:57:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 07:09:55:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 07:10:05:rizqi:USE yups
+2021-06-15 07:10:18:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 08:04:54:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 08:17:05:rizqi:USE yups
+2021-06-15 08:17:16:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 08:18:49:rizqi:USE yups
+2021-06-15 08:18:53:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 08:19:51:rizqi:USE yups
+2021-06-15 08:19:55:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 08:35:51:rizqi:USE yups
+2021-06-15 08:36:00:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 08:36:42:rizqi:USE yups
+2021-06-15 08:36:46:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 08:37:04:rizqi:USE yups
+2021-06-15 08:37:08:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 08:38:12:rizqi:USE yups
+2021-06-15 08:38:16:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 08:39:41:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 08:39:54:rizqi:USE yups
+2021-06-15 08:39:59:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 08:40:49:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 08:41:02:rizqi:USE yups
+2021-06-15 08:41:12:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 08:42:32:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 08:44:45:rizqi:USE yups
+2021-06-15 08:45:20:rizqi:USE yups
+2021-06-15 08:45:24:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 08:49:29:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 08:50:04:rizqi:USE yups
+2021-06-15 08:50:13:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 08:50:49:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 08:53:19:rizqi:USE yups
+2021-06-15 08:53:30:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 08:53:35:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 09:03:00:rizqi:USE yups
+2021-06-15 09:03:10:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 09:03:41:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 09:04:17:rizqi:USE yups
+2021-06-15 09:04:23:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 09:05:04:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 09:05:37:rizqi:USE yups
+2021-06-15 09:05:42:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')
+2021-06-15 09:07:28:rizqi:INSERT INTO dosen (1, 'ridho rahman', 'male')

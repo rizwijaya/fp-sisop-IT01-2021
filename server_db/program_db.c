@@ -12,6 +12,7 @@
 #include <dirent.h>
 #include <time.h>
 #include<arpa/inet.h>
+#include <assert.h>
 
 #define PORT 8080
 #define MAX_LENGTH 1000
@@ -177,14 +178,7 @@ void createUser(char query[]) {
     fclose(fp);
 }
 
-void remove_all_chars(char* str, char c) {
-    char *pr = str, *pw = str;
-    while (*pr) {
-        *pw = *pr++;
-        pw += (*pw != c);
-    }
-    *pw = '\0';
-}
+void remove_all_chars(char* str, char c);
 
 void createTable(const char* query){
     // if setDb exist
@@ -197,6 +191,7 @@ void createTable(const char* query){
         
         // ambil isi tabel
         strcpy(buffer, query);
+        remove_all_chars(buffer, ';'); 
         remove_all_chars(buffer, ','); 
         char* value = strtok(buffer, " ");
         while ( value != NULL) {
@@ -230,9 +225,69 @@ void createTable(const char* query){
         fclose(fp);
         
         // success message
-        message("\nTabel berhasil dibuat");
+        message("Tabel berhasil dibuat");
     } else {
-        message("\nAnda belum memilih database");
+        message("Anda belum memilih database");
+    }
+}
+
+// TL; DR, untuk replace substring dalam string
+char *strrep(const char *s1, const char *s2, const char *s3);
+
+void insert(const char* query){
+    if (strcmp(user_data.setDb, "kosong") != 0){
+        int loop = 1;
+        char buffer[1024], tableName[1024], tableRow[1024], tablePath[1024], content[1024];
+        
+        strcpy(buffer, query);
+        // remove char penganggu
+        remove_all_chars(buffer, ';');
+        
+        char* value = strtok(buffer, " ");
+        while ( value != NULL){
+            if (loop == 2 && (strcmp(value, "INTO") != 0)) message("Query invalid");
+            if (loop == 3) strcpy(tableName, value);
+            value = strtok(NULL, " ");
+            loop++;
+        }
+
+        // get table value
+        memset(buffer, 0, sizeof buffer);
+        strcpy(buffer, query);
+        
+        // dapatkan value dari okurensi awal kurung buka
+        char* tableValue = strchr(buffer, '(');
+        
+        // hilangkan kurungnya biar gampang
+        remove_all_chars(tableValue, '(');
+        remove_all_chars(tableValue, ')');
+        remove_all_chars(tableValue, '\'');
+        
+        // hilangkan ", "
+        char *str = strrep(tableValue, ", ", ",");
+        strcpy(tableValue, str);
+        free(str);
+
+        // output
+        strcat(tableName, ".csv");
+        if (TableExist(tableName) == 1){
+            // setting path
+            message(tableValue);
+            sprintf(tablePath, "databases/%s/%s", user_data.setDb, tableName);
+            sprintf(content, "\n%s", tableValue);
+
+            // append to file
+            FILE *fp = fopen(tablePath, "a");
+            fprintf(fp, "%s", content);
+            fclose(fp);
+
+            message("Sukses menambahkan data.");
+        } else {
+            sprintf(buffer, "Tabel %s tidak ada di database %s", tableName, user_data.setDb);
+            message(buffer);
+        }
+    } else{
+        message("Anda belum memilih database");
     }
 }
 
@@ -454,6 +509,9 @@ void loginsukses()
         } else if(strcmp(cmd, "DROP") == 0) {
             catatLog(buffer);
             drop(buffer);
+        } else if(strcmp(cmd, "INSERT") == 0){
+            catatLog(buffer);
+            insert(buffer);
         } else {
             message("Query invalid");
         }
@@ -579,4 +637,84 @@ int main()
             pthread_create(&input, NULL, &input_main, 0);
         }
     }
+}
+
+char *strrep(const char *s1, const char *s2, const char *s3)
+{
+    if (!s1 || !s2 || !s3)
+        return 0;
+    size_t s1_len = strlen(s1);
+    if (!s1_len)
+        return (char *)s1;
+    size_t s2_len = strlen(s2);
+    if (!s2_len)
+        return (char *)s1;
+
+    /*
+     * Two-pass approach: figure out how much space to allocate for
+     * the new string, pre-allocate it, then perform replacement(s).
+     */
+
+    size_t count = 0;
+    const char *p = s1;
+    assert(s2_len); /* otherwise, strstr(s1,s2) will return s1. */
+    do {
+        p = strstr(p, s2);
+        if (p) {
+            p += s2_len;
+            ++count;
+        }
+    } while (p);
+
+    if (!count)
+        return (char *)s1;
+
+    /*
+     * The following size arithmetic is extremely cautious, to guard
+     * against size_t overflows.
+     */
+    assert(s1_len >= count * s2_len);
+    assert(count);
+    size_t s1_without_s2_len = s1_len - count * s2_len;
+    size_t s3_len = strlen(s3);
+    size_t s1_with_s3_len = s1_without_s2_len + count * s3_len;
+    if (s3_len &&
+        ((s1_with_s3_len <= s1_without_s2_len) || (s1_with_s3_len + 1 == 0)))
+        /* Overflow. */
+        return 0;
+    
+    char *s1_with_s3 = (char *)malloc(s1_with_s3_len + 1); /* w/ terminator */
+    if (!s1_with_s3)
+        /* ENOMEM, but no good way to signal it. */
+        return 0;
+    
+    char *dst = s1_with_s3;
+    const char *start_substr = s1;
+    size_t i;
+    for (i = 0; i != count; ++i) {
+        const char *end_substr = strstr(start_substr, s2);
+        assert(end_substr);
+        size_t substr_len = end_substr - start_substr;
+        memcpy(dst, start_substr, substr_len);
+        dst += substr_len;
+        memcpy(dst, s3, s3_len);
+        dst += s3_len;
+        start_substr = end_substr + s2_len;
+    }
+
+    /* copy remainder of s1, including trailing '\0' */
+    size_t remains = s1_len - (start_substr - s1) + 1;
+    assert(dst + remains == s1_with_s3 + s1_with_s3_len + 1);
+    memcpy(dst, start_substr, remains);
+    assert(strlen(s1_with_s3) == s1_with_s3_len);
+    return s1_with_s3;
+}
+
+void remove_all_chars(char* str, char c) {
+    char *pr = str, *pw = str;
+    while (*pr) {
+        *pw = *pr++;
+        pw += (*pw != c);
+    }
+    *pw = '\0';
 }

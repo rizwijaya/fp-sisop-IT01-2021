@@ -1,2 +1,3 @@
-id,nama,gender,baju,umur,kucing,sudah_haji,sudah_baligh
-int,varchar,char,varchar,int,varchar,int,int
+id,nama,gender
+int,varchar,char
+1,ridho rahman,male
