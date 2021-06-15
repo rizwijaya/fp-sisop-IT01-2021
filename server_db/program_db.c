@@ -100,31 +100,15 @@ int TableExist(char table[]){
 	closedir(di);
 	return found;
 }
-//Fungsi untuk melakukan login
-int login(char id[], char password[])
-{
-    FILE *fp = fopen("databases/auth/akun.txt", "r"); //Buka file akun
-    int is_auth = 0;
-    char buffer[1024];
-    while (fgets(buffer, 1024, fp) != NULL && is_auth == 0) {
-        char file_id[1024], file_password[1024];
-        //Memisahkan id dan password pada file
-        char *token = strtok(buffer, ":");
-        strcpy(file_id, token);
-        token = strtok(NULL, "\n");
-        strcpy(file_password, token);
-
-        //Jika id dan password sesuai, maka return ke 1
-        if (strcmp(id, file_id) == 0 && strcmp(password, file_password) == 0) {
-            is_auth = 1;
-            strcpy(user_data.name, id);
-            strcpy(user_data.pwd, password);
-        } else {
-            is_auth = 2;
-        }
-    }
-    fclose(fp);
-    return is_auth;
+char *trim(char *s) {
+    char *ptr;
+    if (!s)
+        return NULL;   // handle NULL string
+    if (!*s)
+        return s;      // handle empty string
+    for (ptr = s + strlen(s) - 1; (ptr >= s) && isspace(*ptr); --ptr);
+    ptr[1] = '\0';
+    return s;
 }
 
 void catatLog(char argument[]) { //Fungsi Logging mencatat Log
@@ -147,7 +131,7 @@ int permission(char database[]) { //Fungsi Untuk mengecek Authorisasi
     //diloop jika nama ada maka langsung bisa akses user jika tidak cetak tidak berhak
     //kemudian apabila user dihapus maka hapus juga
     char loc[1024];
-    sprintf(loc, "databases/%s/izin.txt", database);
+    sprintf(loc, "databases/%s/izin.csv", database);
     FILE *fp = fopen(loc, "r"); //Buka file akun
     int izin = 0;
     char buffer[1024];
@@ -188,8 +172,8 @@ void createUser(char query[]) {
         loop++;
     }
     //Input data query kedatabase auth
-    FILE *fp = fopen("databases/auth/akun.txt", "a");
-    fprintf(fp, "%s:%s\n", username, password);
+    FILE *fp = fopen("databases/auth/akun.csv", "a");
+    fprintf(fp, "%s,%s\n", username, password);
     fclose(fp);
 }
 
@@ -209,11 +193,11 @@ void createDb(char query[]) {
     //Buat folder database
     sprintf(folder, "mkdir databases/%s", database);
     system(folder);
-    //Buat Table/File izin.txt
-    sprintf(file, "touch databases/%s/izin.txt", database);
+    //Buat Table/File izin
+    sprintf(file, "touch databases/%s/izin.csv", database);
     system(file);
-    //Isi Table/File izin.txt dengan heading izin dan kemudian nama user
-    sprintf(isifile, "databases/%s/izin.txt", database);
+    //Isi Table/File izin dengan heading izin dan kemudian nama user
+    sprintf(isifile, "databases/%s/izin.csv", database);
     FILE *fp = fopen(isifile, "a");
     fprintf(fp, "izin\n%s", user_data.name);
     fclose(fp);
@@ -239,8 +223,8 @@ void create(char query[]) { //Fungsi cek CREATE yang digunakan
         }
     } else if (strcmp(tipe, "DATABASE") == 0) {
         createDb(query);
-    } else if (strcmp(tipe, "TABLE") == 0) {
-    
+    } else if (strcmp(tipe, "TABLE") == 0) { //Belum Selesai
+        //createTable(query);
     }
 }
 
@@ -257,8 +241,9 @@ void useDb(char query[]) {
         p = strtok(NULL, " ");
         loop++;
     }
-    if(permission(fname) == 1) { //mengecek apakah user diizinkan mengakses
-        if (DBExist( fname) == 1) { //Jika database ada
+    
+    if(DBExist( fname) == 1) { //mengecek apakah user diizinkan mengakses
+        if (permission(fname) == 1) { //Jika database ada
             memset(user_data.setDb, 0, 1000);
             strcpy(user_data.setDb, fname);
             sprintf(msg, "\nDatabase %s terpilih.", user_data.setDb);
@@ -289,7 +274,7 @@ void ChangePermission(char query[]) {
         q = split_string( NULL, t1 );
         loop++;
     }
-    sprintf(folder, "databases/%s/izin.txt", database);
+    sprintf(folder, "databases/%s/izin.csv", database);
     //Input data query kedatabase auth
     FILE *fp = fopen(folder, "a");
     fprintf(fp, "\n%s", nama);
@@ -330,15 +315,16 @@ void dropTable(char query[]) {
     while ( p ) {
         if(loop == 3) {
             strtok(p, ";");
-            sprintf(table, "%s", p);
+            sprintf(table, "%s.csv", p);
         }
         p = strtok(NULL, " ");
         loop++;
     }
-
-    if(user_data.setDb != NULL) { //Jika db sudah di use
+    // puts(table);
+    // printf("%s", user_data.setDb);
+    if(strcmp(user_data.setDb, "kosong") != 0) { //Jika db sudah di use
         if (TableExist(table) == 1) { //Jika table ada
-            sprintf(folder, "rm -r databases/%s/%s.txt", user_data.setDb ,table);
+            sprintf(folder, "rm -r databases/%s/%s", user_data.setDb ,table);
             system(folder);
             message("\nTable berhasil dihapus.");  
         } else {
@@ -347,7 +333,6 @@ void dropTable(char query[]) {
     } else {
         message("\nSilahkan set database terlebih dahulu.");
     }
-
 }
 
 void drop(char query[]) {
@@ -366,8 +351,8 @@ void drop(char query[]) {
         dropDb(query);
     } else if (strcmp(tipe, "TABLE") == 0) {
         dropTable(query);
-    } else if (strcmp(tipe, "COLUMN") == 0) {
-    
+    } else if (strcmp(tipe, "COLUMN") == 0) { //Belum Selesai
+        //dropColumn(query);
     }
 }
 
@@ -416,6 +401,35 @@ void loginsukses()
     }
 }
 
+//Fungsi untuk melakukan login
+int login(char id[], char password[])
+{
+    strcpy(id, trim(id));
+    strcpy(password, trim(password));
+    FILE *fp = fopen("databases/auth/akun.csv", "r"); //Buka file akun
+    int is_auth = 0;
+    char buffer[1024];
+    while (fgets(buffer, 1024, fp) != NULL && is_auth == 0) {
+        char file_id[1024], file_password[1024];
+        //Memisahkan id dan password pada file
+        char *token = strtok(buffer, ",");
+        strcpy(token, trim(token));
+        strcpy(file_id, token);
+        token = strtok(NULL, "\n");
+        strcpy(token, trim(token));
+        strcpy(file_password, token);
+        //Jika id dan password sesuai, maka return ke 1
+        if (strcmp(id, file_id) == 0 && strcmp(password, file_password) == 0) {
+            is_auth = 1;
+        } else {
+            is_auth = 0;
+        }
+    }
+    fclose(fp);
+    printf("%d", is_auth);
+    return is_auth;
+}
+
 void *input_main()
 {
     char buffer[1024], username[1024], password[1024];
@@ -430,25 +444,25 @@ void *input_main()
             strcpy(username, token);
             token = strtok(NULL, "\n");
             strcpy(password, token);
-            message(username);
-            message(password);
+
             if (strcmp(username, "root") == 0 || strcmp(password, "12345") == 0) {
-                //message("root");
                 user_data.is_auth = 1; //set auth
+                strcpy(user_data.name, username);
+                strcpy(user_data.pwd, password);
             } else {
                 user_data.is_auth = login(username, password);
-                if (user_data.is_auth == 2) {
+                if (user_data.is_auth == 0) {
                     message("Login Gagal, Silahkan login ulang.");
-                    exit(EXIT_FAILURE);
+                    //exit(0);
                 } else if (user_data.is_auth == 1) {
+                    strcpy(user_data.name, username);
+                    strcpy(user_data.pwd, password);
                     loginsukses();
                 }
             }
         } else if (user_data.is_auth == 1) { //Jika berhasil login maka ke process selanjutnya.
             //message("\e[1;1H\e[2J");
             //set user data dan password
-            strcpy(user_data.name, username);
-            strcpy(user_data.pwd, password);
             loginsukses();
         }
     }
@@ -496,6 +510,7 @@ int main()
         user_data.socket = clientsocket;
     }
     user_data.is_auth = 0; //Menginisialisasi auth dengan 0
+    strcpy(user_data.setDb, "kosong");
 
     pthread_create(&input, NULL, &input_main, 0);
     while (1)
