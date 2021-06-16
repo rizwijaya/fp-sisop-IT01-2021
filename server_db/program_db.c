@@ -682,6 +682,10 @@ void drop(char query[]) {
     }
 }
 
+void delete(char query[]) {
+
+}
+
 void loginsukses()
 {
     char msg[1024], buffer[1024], loc[1024];
@@ -724,6 +728,9 @@ void loginsukses()
         } else if(strcmp(cmd, "INSERT") == 0){
             catatLog(buffer);
             insert(buffer);
+        } else if(strcmp(cmd, "DELETE") == 0) {
+            catatLog(buffer);
+            delete(buffer);
         } else {
             message("Query invalid");
         }
