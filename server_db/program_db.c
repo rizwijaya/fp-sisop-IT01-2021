@@ -488,45 +488,45 @@ char** cutArray(char* a_str, const char a_delim) { //Fungsi untuk melakukan cut 
     return result;
 }
 
-int GetColumn(char table[], char word[], int* in, int* fou, int* row) { //Fungsi untuk get Index column dengan nama
-    char data[1024], folder[1024];
-    sprintf(folder, "databases/%s/%s", user_data.setDb, table);
-	FILE *fp = fopen(folder, "r");
-	if(fgets(data, sizeof(data), fp))
-	fclose(fp);
+// int GetColumn(char table[], char word[], int* in, int* fou, int* row) { //Fungsi untuk get Index column dengan nama
+//     char data[1024], folder[1024];
+//     sprintf(folder, "databases/%s/%s", user_data.setDb, table);
+// 	FILE *fp = fopen(folder, "r");
+// 	if(fgets(data, sizeof(data), fp))
+// 	fclose(fp);
 
-    char** tokens;
-    char cv[10][10];
-    int akhir, i;
+//     char** tokens;
+//     char cv[10][10];
+//     int akhir, i;
 
-    tokens = cutArray(data, ',');
+//     tokens = cutArray(data, ',');
     
-    if (tokens) {
-        for (i = 0; *(tokens + i); i++) {
-            strcpy(cv[i], trim(*(tokens + i)));
-            free(*(tokens + i));
-            akhir = i+1;
-        }
-        printf("\n");
-        free(tokens);
-    }
+//     if (tokens) {
+//         for (i = 0; *(tokens + i); i++) {
+//             strcpy(cv[i], trim(*(tokens + i)));
+//             free(*(tokens + i));
+//             akhir = i+1;
+//         }
+//         printf("\n");
+//         free(tokens);
+//     }
 
-    i = 0;
-    int found = 0;
-    int index = 0;
-    while(i < akhir) {
-        if(strcmp(cv[i], word) == 0) {
-            found = 1;
-            index = i+1;
-            break;
-        }
-        i++;
-    }
-    //Return nilai found, index dan total row pada data
-    *fou = found;
-    *in = index;
-    *row = akhir;
-}
+//     i = 0;
+//     int found = 0;
+//     int index = 0;
+//     while(i < akhir) {
+//         if(strcmp(cv[i], word) == 0) {
+//             found = 1;
+//             index = i+1;
+//             break;
+//         }
+//         i++;
+//     }
+//     //Return nilai found, index dan total row pada data
+//     *fou = found;
+//     *in = index;
+//     *row = akhir;
+// }
 
 // void getRecord(char tipe[], char table[], size_t index) { //Fungsi get data per column dengan index
 //     char buf[1024], folder[1024];
@@ -554,73 +554,148 @@ int GetColumn(char table[], char word[], int* in, int* fou, int* row) { //Fungsi
 //     }
 // }
 
-void deleteColumn(char table[], int in, int totalRow) {
-    FILE *fp;
-    char line[1024], buff[1024], folder[1024], delete[1024];
-    char *buffer;
-    char *ptr;
+// void deleteColumn(char table[], int in, int totalRow) {
+//     FILE *fp;
+//     char line[1024], buff[1024], folder[1024], delete[1024];
+//     char *buffer;
+//     char *ptr;
 
-    buffer = (char *)malloc(1000 * sizeof(char));
-    memset(buffer, 0, 1000 * sizeof(char));
-    ptr = buffer;
+//     buffer = (char *)malloc(1000 * sizeof(char));
+//     memset(buffer, 0, 1000 * sizeof(char));
+//     ptr = buffer;
 
+//     sprintf(folder, "databases/%s/%s", user_data.setDb, table);
+//     fp = fopen(folder, "r");
+//     if (fp != NULL) {
+// 		int row = 0;
+// 		int column = 0;
+//         int newline = 2;
+//         int first = 1;
+// 		while (fgets(buff, 1024, fp)) {
+// 			column = 0;
+// 			row++;
+
+// 			char* value = strtok(buff, ",");
+// 			while (value != NULL) {
+
+// 				if (column == in-1) { 
+//                     strcpy(delete, value);
+//                 // } else if(column+1 == totalRow) { 
+//                 //      if(row == newline){
+//                 //         sprintf(ptr, "\n%s", value);
+//                 //         ptr += strlen(value);
+//                 //         newline = row+1;
+//                 //     } else if(first == 1) {
+//                 //         sprintf(ptr, "%s", value);
+//                 //         ptr += strlen(value);
+//                 //         newline = row+1;
+//                 //         first++;
+//                 //     } else {
+//                 //         sprintf(ptr, ",%s", value);
+//                 //         ptr += strlen(value) + 1;
+//                 //     }
+//                 } else {
+//                     if(row == newline){
+//                         sprintf(ptr, "%s", value);
+//                         ptr += strlen(value);
+//                         newline = row+1;
+//                     } else if(first == 1) {
+//                         sprintf(ptr, "%s", value);
+//                         ptr += strlen(value);
+//                         newline = row+1;
+//                         first++;
+//                     } else {
+//                         sprintf(ptr, ",%s", value);
+//                         ptr += strlen(value) + 1;
+//                     }
+//                 }
+// 				value = strtok(NULL, ",");
+// 				column++;
+// 			}
+// 		}
+//         fclose(fp);
+//         fp = fopen(folder, "w");
+//         fprintf(fp, "%s", buffer);
+//         fclose(fp);
+//     } else {
+//         printf("File gagal dibuka");
+//     }
+//     message("\nColumn berhasil dihapus.");  
+// }
+
+int deleteColumn(const char* table, const char* column){
+    char folder[1024];
     sprintf(folder, "databases/%s/%s", user_data.setDb, table);
+    FILE* fp;
     fp = fopen(folder, "r");
-    if (fp != NULL) {
-		int row = 0;
-		int column = 0;
-        int newline = 2;
-        int first = 1;
-		while (fgets(buff, 1024, fp)) {
-			column = 0;
-			row++;
-
-			char* value = strtok(buff, ",");
-			while (value != NULL) {
-
-				if (column == in-1) { 
-                    strcpy(delete, value);
-                // } else if(column+1 == totalRow) { 
-                //      if(row == newline){
-                //         sprintf(ptr, "\n%s", value);
-                //         ptr += strlen(value);
-                //         newline = row+1;
-                //     } else if(first == 1) {
-                //         sprintf(ptr, "%s", value);
-                //         ptr += strlen(value);
-                //         newline = row+1;
-                //         first++;
-                //     } else {
-                //         sprintf(ptr, ",%s", value);
-                //         ptr += strlen(value) + 1;
-                //     }
-                } else {
-                    if(row == newline){
-                        sprintf(ptr, "%s", value);
-                        ptr += strlen(value);
-                        newline = row+1;
-                    } else if(first == 1) {
-                        sprintf(ptr, "%s", value);
-                        ptr += strlen(value);
-                        newline = row+1;
-                        first++;
-                    } else {
-                        sprintf(ptr, ",%s", value);
-                        ptr += strlen(value) + 1;
-                    }
-                }
-				value = strtok(NULL, ",");
-				column++;
-			}
-		}
-        fclose(fp);
-        fp = fopen(folder, "w");
-        fprintf(fp, "%s", buffer);
-        fclose(fp);
-    } else {
-        printf("File gagal dibuka");
+    if (fp == NULL) {
+      perror("Failed: ");
+      return -1;
     }
-    message("\nColumn berhasil dihapus.");  
+
+    int nline = 1, curIndex = 1, colIndex = 0;
+    char buffer[1024], rewrite[1024];
+    
+    // -1 to allow room for NULL terminator for really long string
+    while (fgets(buffer, 1024 - 1, fp))
+    {
+        // Remove trailing newline
+        buffer[strcspn(buffer, "\n")] = 0;
+        // line 1: data type
+        if (nline == 1){
+            char* token;
+            curIndex = 1;
+            token = strtok(buffer, ",");
+            while( token != NULL ) {
+                // ambil index dari kolom yang mau dihapus
+                if (strcmp(token, column)==0){
+                    colIndex = curIndex;
+                } else if (curIndex != 1){
+                    // printf( " %s\n", token );
+                    strcat(rewrite, ",");
+                    strcat(rewrite, token);
+                } else strcat(rewrite, token);
+                token = strtok(NULL, ",");
+                curIndex++;
+            }
+            strcat(rewrite, "\n");
+        }
+
+        if (colIndex == 0) return -1;
+
+        if (nline > 1){
+            char* token;
+            curIndex = 1;
+            token = strtok(buffer, ",");
+            while( token != NULL ) {
+                // kolom yang dihapus
+                if (colIndex == curIndex){
+                    // gak usah ngapa2 in
+                } else if (curIndex != 1){
+                    // printf( " %s\n", token );
+                    strcat(rewrite, ",");
+                    strcat(rewrite, token);
+                } else{
+                    strcat(rewrite, token);
+                }
+                token = strtok(NULL, ",");
+                curIndex++;
+            }
+            strcat(rewrite, "\n");
+        }
+
+        nline++;
+    }
+    message(rewrite);
+    fclose(fp);
+
+    // buka lagi untuk rewrite db
+    fp = fopen(folder, "w");
+    fprintf(fp, "%s", rewrite);
+    fclose(fp);
+    memset(rewrite, 0, sizeof rewrite);
+
+    return 0;
 }
 
 void dropColumn(char query[]) {
@@ -628,7 +703,7 @@ void dropColumn(char query[]) {
     //Lakukan split query yang digunakan
     char *p = strtok(query, " ");
     char column[1024];
-    char tipe[1024], table[1024];
+    char tipe[1024], table[1024], msg[1024];
     
     while ( p ) {
         if(loop == 1) {
@@ -644,17 +719,25 @@ void dropColumn(char query[]) {
     }
     if(strcmp(user_data.setDb, "kosong") != 0) { //Jika db sudah di use
         if (TableExist(table) == 1) { //Jika table ada
-            int in, fo, row;
-            //puts("Drop Column");
-            GetColumn(table, column, &in, &fo, &row);
-            if (fo == 1) {
-                deleteColumn(table, in, row);
-                message("\nColumn berhasil dihapus.");  
-            } else if(fo == 0) {
-                printf("Column Tidak ditemukan");
+            if (deleteColumn(table, column) == 0){
+                sprintf(msg, "Kolom %s berhasil terhapus.", column);
+                message(msg);
+            } else {
+                sprintf(msg, "Gagal menghapus kolom %s, cek apakah kolom ada.", column);
+                message(msg);
             }
+            // int in, fo, row;
+            // //puts("Drop Column");
+            // GetColumn(table, column, &in, &fo, &row);
+            // if (fo == 1) {
+            //     deleteColumn(table, in, row);
+            //     message("\nColumn berhasil dihapus.");  
+            // } else if(fo == 0) {
+            //     printf("Column Tidak ditemukan");
+            // }
         } else {
-            message("\nColumn berhasil dihapus.");
+            sprintf(msg, "Tabel %s tidak ada.", table);
+            message(msg);
         }
     } else {
         message("\nSilahkan set database terlebih dahulu.");
