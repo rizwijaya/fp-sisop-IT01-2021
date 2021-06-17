@@ -13,6 +13,8 @@
 #include <time.h>
 #include<arpa/inet.h>
 #include <assert.h>
+#include <fcntl.h>
+#include <syslog.h>
 
 #define PORT 8080
 #define MAX_LENGTH 1000
@@ -128,10 +130,6 @@ void catatLog(char argument[]) { //Fungsi Logging mencatat Log
 }
 
 int permission(char database[]) { //Fungsi Untuk mengecek Authorisasi
-    //bikin file khusus permission ditiap folder database
-    //sebelum akses foldernya cek dlu permission difile itu
-    //diloop jika nama ada maka langsung bisa akses user jika tidak cetak tidak berhak
-    //kemudian apabila user dihapus maka hapus juga
     char loc[1024];
     sprintf(loc, "databases/%s/izin.csv", database);
     FILE *fp = fopen(loc, "r"); //Buka file akun
@@ -142,7 +140,6 @@ int permission(char database[]) { //Fungsi Untuk mengecek Authorisasi
         //Melakukan split file authorisasi
         char *token = strtok(buffer, "\n");
         strcpy(file_id, token);
-        //token = strtok(NULL, "\n");
 
         //Jika terdapat data user/password maka izinkan
         if (strcmp(user_data.name, file_id) == 0) {
@@ -320,7 +317,7 @@ void createDb(char query[]) {
 
 void create(char query[]) { //Fungsi cek CREATE yang digunakan
     int loop = 1;
-    char tipe[1024], buffer[1024];
+    char tipe[1024], buffer[1024], nama[1024];
     strcpy(buffer, query);
     char* value = strtok(buffer, " ");
     while ( value != NULL) {
@@ -330,15 +327,16 @@ void create(char query[]) { //Fungsi cek CREATE yang digunakan
         value = strtok(NULL, " ");
 		loop++;
     }
+
     if (strcmp(tipe, "USER") == 0) { //Jika tipe adalah USER
-        if(permission(tipe) == 1) { //mengecek apakah user diizinkan mengakses
-            createUser(query);
+        if(permission("auth") == 1) { //mengecek apakah user diizinkan mengakses
+            createUser(query);       
         } else {
             message("User tidak diizinkan mengakses");
         }
     } else if (strcmp(tipe, "DATABASE") == 0) {
         createDb(query);
-    } else if (strcmp(tipe, "TABLE") == 0) { //Belum Selesai
+    } else if (strcmp(tipe, "TABLE") == 0) {
         createTable(query);
     }
 }
@@ -435,8 +433,6 @@ void dropTable(char query[]) { //Fungsi untuk menghapus table
         p = strtok(NULL, " ");
         loop++;
     }
-    // puts(table);
-    // printf("%s", user_data.setDb);
     if(strcmp(user_data.setDb, "kosong") != 0) { //Jika db sudah di use
         if (TableExist(table) == 1) { //Jika table ada
             sprintf(folder, "rm -r databases/%s/%s", user_data.setDb ,table);
@@ -449,101 +445,6 @@ void dropTable(char query[]) { //Fungsi untuk menghapus table
         message("\nSilahkan set database terlebih dahulu.");
     }
 }
-
-// void getRecord(char tipe[], char table[], size_t index) { //Fungsi get data per column dengan index
-//     char buf[1024], folder[1024];
-//     sprintf(folder, "databases/%s/%s", user_data.setDb, table);                               
-//     FILE *fp = fopen (folder, "r");     
-
-//     while (fgets (buf, 1024, fp)) { 
-//         char *p = buf;
-//         size_t i = 0;
-
-//         for (p = strtok(p, DELIM); p && i < index; p = strtok (NULL, DELIM))
-//             i++;
-//         if (i == index && p) { /* Jika index ditemukan */
-//             //Lakukan proses data
-//             if(strcmp(tipe, "DROP") == 0) { //Belum selesai
-//                 //dropDataCol(p);
-//                 puts(p);
-//             } else if (strcmp(tipe, "SELECT") == 0) { 
-//                 puts(p);
-//             }
-//         } else {              /* handle error */
-//             fputs ("Column tidak ada\n", stderr);
-//             break;
-//         }
-//     }
-// }
-
-// void deleteColumn(char table[], int in, int totalRow) {
-//     FILE *fp;
-//     char line[1024], buff[1024], folder[1024], delete[1024];
-//     char *buffer;
-//     char *ptr;
-
-//     buffer = (char *)malloc(1000 * sizeof(char));
-//     memset(buffer, 0, 1000 * sizeof(char));
-//     ptr = buffer;
-
-//     sprintf(folder, "databases/%s/%s", user_data.setDb, table);
-//     fp = fopen(folder, "r");
-//     if (fp != NULL) {
-// 		int row = 0;
-// 		int column = 0;
-//         int newline = 2;
-//         int first = 1;
-// 		while (fgets(buff, 1024, fp)) {
-// 			column = 0;
-// 			row++;
-
-// 			char* value = strtok(buff, ",");
-// 			while (value != NULL) {
-
-// 				if (column == in-1) { 
-//                     strcpy(delete, value);
-//                 // } else if(column+1 == totalRow) { 
-//                 //      if(row == newline){
-//                 //         sprintf(ptr, "\n%s", value);
-//                 //         ptr += strlen(value);
-//                 //         newline = row+1;
-//                 //     } else if(first == 1) {
-//                 //         sprintf(ptr, "%s", value);
-//                 //         ptr += strlen(value);
-//                 //         newline = row+1;
-//                 //         first++;
-//                 //     } else {
-//                 //         sprintf(ptr, ",%s", value);
-//                 //         ptr += strlen(value) + 1;
-//                 //     }
-//                 } else {
-//                     if(row == newline){
-//                         sprintf(ptr, "%s", value);
-//                         ptr += strlen(value);
-//                         newline = row+1;
-//                     } else if(first == 1) {
-//                         sprintf(ptr, "%s", value);
-//                         ptr += strlen(value);
-//                         newline = row+1;
-//                         first++;
-//                     } else {
-//                         sprintf(ptr, ",%s", value);
-//                         ptr += strlen(value) + 1;
-//                     }
-//                 }
-// 				value = strtok(NULL, ",");
-// 				column++;
-// 			}
-// 		}
-//         fclose(fp);
-//         fp = fopen(folder, "w");
-//         fprintf(fp, "%s", buffer);
-//         fclose(fp);
-//     } else {
-//         printf("File gagal dibuka");
-//     }
-//     message("\nColumn berhasil dihapus.");  
-// }
 
 int deleteColumn(const char* table, const char* column){
     char folder[1024];
@@ -558,12 +459,9 @@ int deleteColumn(const char* table, const char* column){
     int nline = 1, curIndex = 1, colIndex = 0;
     char buffer[1024], rewrite[1024];
     
-    // -1 to allow room for NULL terminator for really long string
     while (fgets(buffer, 1024 - 1, fp))
     {
-        // Remove trailing newline
         buffer[strcspn(buffer, "\n")] = 0;
-        // line 1: data type
         if (nline == 1){
             char* token;
             curIndex = 1;
@@ -573,7 +471,6 @@ int deleteColumn(const char* table, const char* column){
                 if (strcmp(token, column)==0){
                     colIndex = curIndex;
                 } else if (curIndex != 1){
-                    // printf( " %s\n", token );
                     strcat(rewrite, ",");
                     strcat(rewrite, token);
                 } else strcat(rewrite, token);
@@ -594,7 +491,6 @@ int deleteColumn(const char* table, const char* column){
                 if (colIndex == curIndex){
                     // gak usah ngapa2 in
                 } else if (curIndex != 1){
-                    // printf( " %s\n", token );
                     strcat(rewrite, ",");
                     strcat(rewrite, token);
                 } else{
@@ -648,15 +544,6 @@ void dropColumn(char query[]) {
                 sprintf(msg, "Gagal menghapus kolom %s, cek apakah kolom ada.", column);
                 message(msg);
             }
-            // int in, fo, row;
-            // //puts("Drop Column");
-            // GetColumn(table, column, &in, &fo, &row);
-            // if (fo == 1) {
-            //     deleteColumn(table, in, row);
-            //     message("\nColumn berhasil dihapus.");  
-            // } else if(fo == 0) {
-            //     printf("Column Tidak ditemukan");
-            // }
         } else {
             sprintf(msg, "Tabel %s tidak ada.", table);
             message(msg);
@@ -682,7 +569,7 @@ void drop(char query[]) {
         dropDb(query);
     } else if (strcmp(tipe, "TABLE") == 0) {
         dropTable(query);
-    } else if (strcmp(tipe, "COLUMN") == 0) { //Belum Selesai
+    } else if (strcmp(tipe, "COLUMN") == 0) {
         dropColumn(query);
     }
 }
@@ -883,12 +770,9 @@ void loginsukses()
 {
     char msg[1024], buffer[1024], loc[1024];
     //Tampilkan pesan awal
-    // message("\e[1555557;1H\e[2J\n");
     printf("\nUser %s telah berhasil login.", user_data.name);
     sprintf(msg, "Selamat datang, %s!", user_data.name);
     message(msg);
-    // sprintf(loc, "db@%s: ", user_data.name);
-    // message(loc);
     //Lakukan loop hingga exit atau mode berubah
     while (strcmp(buffer, "exit") != 0 || strcmp(user_data.mode, "recvstrings") == 0)
     {
@@ -982,7 +866,6 @@ void *input_main()
                 user_data.is_auth = login(username, password);
                 if (user_data.is_auth == 0) {
                     message("Login Gagal, Silahkan login ulang.");
-                    //exit(0);
                 } else if (user_data.is_auth == 1) {
                     strcpy(user_data.name, username);
                     strcpy(user_data.pwd, password);
@@ -997,9 +880,8 @@ void *input_main()
     }
 }
 
-int main()
-{
-    int server_fd, clientsocket, valread;
+void server() {
+        int server_fd, clientsocket, valread;
     struct sockaddr_in address;
     int opt = 1;
     int addrlen = sizeof(address);
@@ -1051,6 +933,40 @@ int main()
     }
 }
 
+int main()
+{
+    pid_t pid, sid;        // Variabel untuk menyimpan PID
+
+    pid = fork();     // Menyimpan PID dari Child Process
+
+    if (pid < 0) {
+        exit(EXIT_FAILURE);
+    }
+
+    if (pid > 0) {
+        exit(EXIT_SUCCESS);
+    }
+
+    umask(0);
+
+    sid = setsid();
+    if (sid < 0) {
+        exit(EXIT_FAILURE);
+    }
+
+    if ((chdir("/media/sf_kali-windows/FP/FP/server_db/")) < 0) {
+        exit(EXIT_FAILURE);
+    }
+
+    close(STDOUT_FILENO);
+
+    while(1) {
+        server();
+    }
+   
+    return 0;
+}
+
 char *strrep(const char *s1, const char *s2, const char *s3)
 {
     if (!s1 || !s2 || !s3)
@@ -1062,14 +978,9 @@ char *strrep(const char *s1, const char *s2, const char *s3)
     if (!s2_len)
         return (char *)s1;
 
-    /*
-     * Two-pass approach: figure out how much space to allocate for
-     * the new string, pre-allocate it, then perform replacement(s).
-     */
-
     size_t count = 0;
     const char *p = s1;
-    assert(s2_len); /* otherwise, strstr(s1,s2) will return s1. */
+    assert(s2_len);
     do {
         p = strstr(p, s2);
         if (p) {
@@ -1081,10 +992,6 @@ char *strrep(const char *s1, const char *s2, const char *s3)
     if (!count)
         return (char *)s1;
 
-    /*
-     * The following size arithmetic is extremely cautious, to guard
-     * against size_t overflows.
-     */
     assert(s1_len >= count * s2_len);
     assert(count);
     size_t s1_without_s2_len = s1_len - count * s2_len;
@@ -1092,12 +999,10 @@ char *strrep(const char *s1, const char *s2, const char *s3)
     size_t s1_with_s3_len = s1_without_s2_len + count * s3_len;
     if (s3_len &&
         ((s1_with_s3_len <= s1_without_s2_len) || (s1_with_s3_len + 1 == 0)))
-        /* Overflow. */
         return 0;
     
-    char *s1_with_s3 = (char *)malloc(s1_with_s3_len + 1); /* w/ terminator */
+    char *s1_with_s3 = (char *)malloc(s1_with_s3_len + 1);
     if (!s1_with_s3)
-        /* ENOMEM, but no good way to signal it. */
         return 0;
     
     char *dst = s1_with_s3;
@@ -1114,7 +1019,6 @@ char *strrep(const char *s1, const char *s2, const char *s3)
         start_substr = end_substr + s2_len;
     }
 
-    /* copy remainder of s1, including trailing '\0' */
     size_t remains = s1_len - (start_substr - s1) + 1;
     assert(dst + remains == s1_with_s3 + s1_with_s3_len + 1);
     memcpy(dst, start_substr, remains);
