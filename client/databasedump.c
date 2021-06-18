@@ -8,16 +8,17 @@
 #include <syslog.h>
 #include <string.h>
 #include <ctype.h>
+#include <dirent.h>
+#include<stdbool.h>
 
 char username[1024], password[1024], database[1024];
 
-char *dumpDb();
+void dumpDb(char database[]);
 char *trim(char *s);
 int login(char id[], char password[]);
 
 int main(int argc, char *argv[]) {
-    printf("asuuuu");
-    int is_auth=0;
+    int is_auth;
     int uid = getuid();
     char credentials[1024];
     if (argc < 2) {
@@ -30,51 +31,41 @@ int main(int argc, char *argv[]) {
     } else {
         if (strcmp(argv[1], "-u") == 0) {
             strcpy(username, argv[2]);
+        }
+        if (strcmp(argv[3], "-p") == 0) {
+            strcpy(password, argv[4]);
+        }
+        if (argv[5] != NULL){
+            strcpy(database, argv[5]);
+            sprintf(database, "%s.backup", database);
         } else {
             printf("Wrong argument");
             return 0;
         }
-        if (strcmp(argv[3], "-p") == 0) {
-            strcpy(password, argv[4]);
-        }else{
-            printf("Wrong argument");
-            return 0;
-        }
-        // if (argv[5] != NULL){
-        //     strcpy(database, argv[5]);
-        //     sprintf(database, "%s.backup", database);
-        // } 
-
-        is_auth = login(username, password);
+        is_auth = login(trim(username), trim(password));
     }
-    printf("%s",dumpDb());
-    pid_t pid, sid;        // Variabel untuk menyimpan PID
 
+    pid_t pid, sid;        // Variabel untuk menyimpan PID
     pid = fork();     // Menyimpan PID dari Child Process
 
-    /* Keluar saat fork gagal
-    * (nilai variabel pid < 0) */
     if (pid < 0) {
     exit(EXIT_FAILURE);
     }
 
-    /* Keluar saat fork berhasil
-    * (nilai variabel pid adalah PID dari child process) */
     if (pid > 0) {
-    exit(EXIT_SUCCESS);
+        exit(EXIT_SUCCESS);
     }
 
     umask(0);
 
     sid = setsid();
     if (sid < 0) {
-    exit(EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     }
 
-    if ((chdir("/media/sf_shared/fp-sisop-IT01-2021/server/")) < 0) {
-    exit(EXIT_FAILURE);
+    if ((chdir("/home/kali/Desktop/")) < 0) {
+        exit(EXIT_FAILURE);
     }
-
 
     close(STDIN_FILENO);
     close(STDOUT_FILENO);
@@ -82,43 +73,61 @@ int main(int argc, char *argv[]) {
 
     while (1) {
         // Tulis program kalian di sini
-        sleep(10);
-        char *write = dumpDb();
         int n1 = fork();
         if (n1 == 0){
-            char *argv[] = {"echo", write, ">>", database};
-            execv("/bin/echo", argv);
+            // char *argv[] = {"echo", write, ">>", database};
+            // execv("/bin/echo", argv);
+            dumpDb(database);
         }
+        sleep(5);
     }
 }
 
-char *dumpDb(){
-    FILE* fp;
+void dumpDb(char database[]){
+    //Create File database
+    char loc[1024];
+    memset(loc, 0, sizeof loc);
+    sprintf(loc, "touch %s", database);
+    system(loc);
 
-    fp = fopen("/media/sf_shared/fp-sisop-IT01-2021/server_db/databases/running.log", "r");
+    //Buka File running.log
+    FILE* fp;
+    char location[1024];
+    char *buffer;
+    char *dump;
+
+    fp = fopen("../server_db/databases/running.log", "r");
     if (fp == NULL) {
-    perror("Failed: ");
-    return("error");
+        perror("Failed: ");
     }
 
-    char buffer[1024];
-    char *dump;
+    buffer = (char *)malloc(1000 * sizeof(char));
+    memset(buffer, 0, 1000 * sizeof(char));
+    dump = buffer;
     // -1 to allow room for NULL terminator for really long string
-    while (fgets(buffer, 1024 - 1, fp))
-    {
+    while (fgets(buffer, 1024 - 1, fp)) {
         // Remove trailing newline
         buffer[strcspn(buffer, "\n")] = 0;
         char *token = strtok(buffer, ":");
         int loop = 1;
         while (token != NULL){
-            if (loop == 5) strcat(dump, buffer);
+            if (loop == 5) {
+                sprintf(dump, "%s\n", token);
+                //strcpy(dump, buffer);
+                dump += strlen(token);
+            }
+            token = strtok(NULL, ":");
+            //printf("%s\n", dump);
             loop++;
         }
-        strcat(dump, "\n");
     }
-
     fclose(fp);
-    return dump;
+
+    sprintf(location, "/home/kali/Desktop/%s", database);
+    fp = fopen(location, "w");
+    fprintf(fp, "%s", buffer);
+    fclose(fp);
+    return;
 }
 
 char *trim(char *s) {
@@ -134,9 +143,7 @@ char *trim(char *s) {
 
 int login(char id[], char password[])
 {
-    strcpy(id, trim(id));
-    strcpy(password, trim(password));
-    FILE *fp = fopen("/media/sf_shared/fp-sisop-IT01-2021/server_db/databases/auth/akun.csv", "r"); //Buka file akun
+    FILE *fp = fopen("../server_db/databases/auth/akun.csv", "r"); //Buka file akun
     int is_auth = 0;
     char buffer[1024];
     while (fgets(buffer, 1024, fp) != NULL && is_auth == 0) {
@@ -156,6 +163,6 @@ int login(char id[], char password[])
         }
     }
     fclose(fp);
-    printf("%d", is_auth);
+    //printf("login: %d", is_auth);
     return is_auth;
 }
