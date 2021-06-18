@@ -170,9 +170,8 @@ int permission(char database[]) { //Fungsi Untuk mengecek Authorisasi
         //Melakukan split file authorisasi
         char *token = strtok(buffer, "\n");
         strcpy(file_id, token);
-
         //Jika terdapat data user/password maka izinkan
-        if (strcmp(user_data.name, file_id) == 0) {
+        if (strcmp(trim(user_data.name), trim(file_id)) == 0) {
             izin = 1;
         } else {    //Jika tidak ada, maka tidak berhak
             izin = 0;
@@ -847,7 +846,191 @@ void delete(char query[]) {
 //     }
 // }
 
+int updateTabel(const char* query){
+    query = strrep(query, ";", "");
+    if(strcmp(user_data.setDb, "kosong") == 0) return -1;
+    FILE* fp;
+    char folder[1024];
+    int loop = 1, nline=1;
+    bool where = false, isset = false;
+    char tabel[1024], buffer[1024], condition[1024], conditionType[1024], conditionValue[1024], set[1024], setType[1024], setValue[1024];
+    memset(tabel, 0, sizeof tabel);
+
+    strcpy(buffer, query);
+    char* value = strtok(buffer, " ");
+    while (value != NULL){
+        // cek jika sudah lewat where
+        if (strcmp(value, "WHERE") == 0){
+          where = true;  
+        }
+        if (loop == 2){
+            strcpy(tabel, value);
+        }
+        if (loop == 3){
+            if (strcmp(value, "SET")==0) isset = true;
+        }
+        loop++;
+        value = strtok(NULL, " ");
+    }
+    if (where){
+        memset(buffer, 0, sizeof buffer);
+        strcpy(buffer, query);
+
+        // pisah dengan string WHERE
+        char* token = strstr(buffer, "WHERE");
+
+        // hilangkan "WHERE "
+        token = strrep(token, "WHERE ", "");
+
+        // pindah ke condition
+        strcpy(condition, token);
+
+        // split conditionType dan conditionValue
+        char* tok = strtok(condition, "=");
+        loop = 1;
+        while (tok != NULL){
+            if (loop == 1) strcpy(conditionType, tok);
+            else strcpy(conditionValue, tok);
+            tok = strtok(NULL, "=");
+            loop++;
+        }
+        char *str2 = strrep(conditionValue, "'", "");
+        strcpy(conditionValue, str2);
+    }
+    if (isset){
+        memset(buffer, 0, sizeof buffer);
+        strcpy(buffer, query);
+
+        // pisah dengan string SET
+        char* token2 = strstr(buffer, "SET");
+
+        // hilangkan "WHERE "
+        token2 = strrep(token2, "SET ", "");
+
+        // pindah ke condition
+        strcpy(set, token2);
+
+        // split setType dan setValue
+        // message(set);
+        char* tok5 = strtok(set, "=");
+        loop = 1;
+        while (tok5 != NULL){
+            if (loop == 1) strcpy(setType, tok5);
+            else if (loop ==2) strcpy(setValue, tok5);
+            tok5 = strtok(NULL, "=");
+            loop++;
+        }
+        char *str3 = strrep(setValue, "'", "");
+        strcpy(setValue, str3);
+        if (where){
+            char* tok6 = strtok(setValue, " ");
+        }
+        // message(setValue);
+    }
+    else message ("butuh argumen SET=");
+    // message(tabel);
+    // message(setType);
+    // message(setValue);
+        // message("aaaaaaaaaaaaaaaa");
+
+    sprintf(folder, "databases/%s/%s.csv", user_data.setDb, tabel);
+    fp = fopen(folder, "r");
+    if (fp == NULL) {
+      perror("Failed: ");
+      return -1;
+    }
+
+    int curIndex = 1;
+    char buffer2[1024], result[1024];
+    int whereIndex = 0, setIndex=0;
+    nline=1;
+
+    // -1 to allow room for NULL terminator for really long string
+    while (fgets(buffer2, 1024 - 1, fp))
+    {
+        // Remove trailing newline
+        buffer2[strcspn(buffer2, "\n")] = 0;
+        if (nline == 1){
+            curIndex = 1;
+            char *end_str;
+            char buffer3[1024];
+            memset(buffer3, 0, sizeof buffer3);
+            strcpy(buffer3, buffer2);
+            char* token = strtok_r(buffer3, ",", &end_str);
+            while( token != NULL ) {
+                // ambil index dari kolom yang diselect, masukin array
+                // token2 untuk ngeloop strtok tipe
+                if (where) if (strcmp(conditionType, token) == 0) whereIndex = curIndex;
+                if (set) if (strcmp(setType, token) == 0) setIndex = curIndex;
+                
+                token = strtok_r(NULL, ",", &end_str);
+                curIndex++;
+            }
+            strcat(result, buffer2);
+            strcat(result, "\n");
+            // message(result);
+        }
+        if (nline == 2){
+            strcat(result, buffer2);
+            strcat(result, "\n");
+            // message(result);
+        }
+        if (nline > 2){
+            char* token;
+            curIndex = 1;
+            bool startofline = true;
+            char buffer5[1024];
+            memset(buffer5, 0, sizeof buffer5);
+            strcpy(buffer5, buffer2);
+            token = strtok(buffer5, ",");
+            bool need = true;
+            char buf[1024];
+            memset(buf, 0, sizeof buf);
+            while( token != NULL ) {
+                // jika gak masuk kriteria where, set need = false
+                if(whereIndex == curIndex && where == true){
+                    if(strcmp(token, conditionValue)) need = false;
+                }
+                if (setIndex == curIndex){ // set
+                    if (startofline) startofline = false;
+                    else strcat(buf,",");
+                    strcat(buf, setValue);
+                }else{
+                    if (startofline) startofline = false;
+                    else strcat(buf,",");
+                    strcat(buf, token);
+                }
+                token = strtok(NULL, ",");
+                curIndex++;
+            }
+            strcat(buf, "\n");
+            if (need){
+                strcat(result, buf);
+                // message(buf);
+                memset(buf, 0, sizeof buf); // reset buf
+            }else{
+                memset(buf, 0, sizeof buf); // reset buf
+                strcat(result, buffer2);
+                // message(buffer2);
+            }
+        }
+        nline++;    
+    }
+    message(result);
+    fclose(fp);
+
+    char rewrite[1024];
+    sprintf(rewrite, "databases/%s/%s.csv", user_data.setDb, tabel);
+    fp = fopen(rewrite, "a" );
+    fwrite(result , 1 , sizeof(result) , fp );
+
+    fclose(fp);
+    
+    return 0;
+}
+
 int selectFrom(const char* query){
+    query = strrep(query, ";", "");
     if(strcmp(user_data.setDb, "kosong") == 0) return -1;
 
     int loop = 1, nline=1;
@@ -1122,7 +1305,7 @@ void loginsukses()
             delete(buffer);
         } else if(strcmp(cmd, "UPDATE") == 0) {
             catatLog(buffer);
-            //updateTabel(buffer);
+            updateTabel(buffer);
         } else if(strcmp(cmd, "SELECT") == 0) {
             catatLog(buffer);
             selectFrom(buffer);
@@ -1272,7 +1455,7 @@ int main()
         exit(EXIT_FAILURE);
     }
 
-    if ((chdir("/media/sf_kali-windows/FP/FP/server_db/")) < 0) {
+    if ((chdir("/media/sf_shared/fp-sisop-IT01-2021/server_db/")) < 0) {
         exit(EXIT_FAILURE);
     }
 
