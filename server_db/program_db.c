@@ -15,11 +15,41 @@
 #include <assert.h>
 #include <fcntl.h>
 #include <syslog.h>
+#include<stdbool.h>
 
 #define PORT 8080
 #define MAX_LENGTH 1000
 #define SVR "./databases/"
 #define DELIM ",\n"
+
+// dynamic array untuk menyimpan index SELECT
+typedef struct {
+  int *array;
+  size_t used;
+  size_t size;
+} Array;
+
+void initArray(Array *a, size_t initialSize) {
+  a->array = malloc(initialSize * sizeof(int));
+  a->used = 0;
+  a->size = initialSize;
+}
+
+void insertArray(Array *a, int element) {
+  // a->used is the number of used entries, because a->array[a->used++] updates a->used only *after* the array has been accessed.
+  // Therefore a->used can go up to a->size 
+  if (a->used == a->size) {
+    a->size *= 2;
+    a->array = realloc(a->array, a->size * sizeof(int));
+  }
+  a->array[a->used++] = element;
+}
+
+void freeArray(Array *a) {
+  free(a->array);
+  a->array = NULL;
+  a->used = a->size = 0;
+}
 
 pthread_t input, received;
 
@@ -661,6 +691,7 @@ void removingRecord(char table[], char data[], char column[]) {
     char location[1024], line[1024]; 
 
     sprintf(location, "databases/%s/%s.csv", user_data.setDb, table);
+    message(location);
     buffer = (char *)malloc(1000 * sizeof(char));
     memset(buffer, 0, 1000 * sizeof(char));
     ptr = buffer;
@@ -673,12 +704,13 @@ void removingRecord(char table[], char data[], char column[]) {
                 if(loop == 0) { //Cek apakah ada columnya
                     char *cek;
                     cek = strstr(line, column);
-                    if(!cek)
+                    if(!cek) {
                         message("Kolom tidak ada");
                         return;
+                    }
                 }
-
                 if (strstr(line, data) == NULL) { //Tulis data yang ada
+                    message(line);
                     strcpy(ptr, line);
                     ptr += strlen(line);
                 }
@@ -691,6 +723,9 @@ void removingRecord(char table[], char data[], char column[]) {
                 loop++;
             }
         }
+    } else {
+        message("Tabel tidak ada");
+        return;
     }
     fclose(fp);
 
@@ -704,7 +739,8 @@ void removeRecord(char table[], char data[]) {
     if(data != NULL) {
         char buffer[1024];
         strcpy(buffer, data);
-
+        //message(table);
+        //message(data);
         char *value = split_string(buffer, "='");
         int loop = 1;
         while (value != NULL) {
@@ -718,7 +754,8 @@ void removeRecord(char table[], char data[]) {
             loop++;
         } 
     }
-    
+    // message(column);
+    // message(data);
     if(strcmp(user_data.setDb, "kosong") != 0) { //Jika db sudah di use
         sprintf(table2, "%s.csv", table);
         if (TableExist(table2) == 1) { //Jika table ada
@@ -766,6 +803,281 @@ void delete(char query[]) {
     }
 }
 
+// void updatingTabel(char table[], char column[], char data[]) {
+
+// }
+
+// void updateTabel(char query[]) { //Fungsi split query Update
+//     int loop = 1;
+//     char table[1024], buffer[1024], data[1024], column[1024];
+//     strcpy(buffer, query);
+//     char* value = strtok(buffer, " ");
+//     while (value != NULL) {
+//         if (loop == 2) {
+//             sprintf(table, "%s", value);
+//         } else if (loop == 4) {
+//             sprintf(data, "%s", value);
+//         }
+//         value = strtok(NULL, " ");
+//         loop++;
+//     }
+
+//     strcpy(buffer, data);
+//     char *value = split_string(buffer, "='");
+//     int loop = 1;
+//     while (value != NULL) {
+//         if (loop == 1) {
+//             sprintf(column, "%s", value); 
+//         } else if (loop == 2) {
+//             split_string(value, "';");
+//             sprintf(data, "%s", value); 
+//         }
+//         value = split_string(NULL, "='");
+//         loop++;
+//     } 
+
+//      if(strcmp(user_data.setDb, "kosong") != 0) { //Jika db sudah di use
+//         if (TableExist(table) == 1) { //Jika table ada
+//             updatingTabel(table, column, data);
+//         } else {
+//             message("Kesalahan, table tidak ada.");
+//         }
+//     } else {
+//         message("\nSilahkan set database terlebih dahulu.");
+//     }
+// }
+
+int selectFrom(const char* query){
+    if(strcmp(user_data.setDb, "kosong") == 0) return -1;
+
+    int loop = 1, nline=1;
+    bool from = false, where = false;
+    char tipe[1024], table[1024], buffer[1024], conditionType[1024], condition[1024], conditionValue[1024];
+    memset(tipe, 0, sizeof tipe);
+    strcpy(buffer, query);
+    char* value = strtok(buffer, " ");
+    bool wildcard = false;
+    FILE* fp;
+    char folder[1024];
+
+    while (value != NULL) {
+        // cek jika sudah lewat where
+        if (strcmp(value, "WHERE") == 0){
+          where = true;
+          break;  
+        } 
+        // jika ketemu from dan belum ketemu where, ambil table
+        if (from == true && where == false) strcpy(table, value);
+
+        // penanda jika pointer sudah ketemu from
+        if (strcmp(value, "FROM") == 0) from = true;
+
+        // masukkan apa saja yang ingin diselect, selama belum ketemu from
+        if (loop == 2 && (!strcmp(value,"*")) && from == false) wildcard = true;
+        else if (loop > 1 && from == false) strcat(tipe, value);
+
+        // message(value);
+        value = strtok(NULL, " ");
+		loop++;
+    }
+
+    if (wildcard){
+        // isi tipe dengan semua data
+        sprintf(folder, "databases/%s/%s.csv", user_data.setDb, table);
+        fp = fopen(folder, "r");
+        if (fp == NULL) {
+            perror("Failed: ");
+            return -1;
+        }
+        nline=1;
+        char buffer3[1024];
+        // -1 to allow room for NULL terminator for really long string
+        while (fgets(buffer3, 1024 - 1, fp))
+        {
+            // Remove trailing newline
+            buffer3[strcspn(buffer3, "\n")] = 0;
+            if (nline == 1){
+                loop=1;
+                char* token4 = strtok(buffer3, ",");
+                while( token4 != NULL ) {
+                    if(loop!=1) strcat(tipe,",");
+                    strcat(tipe, token4);
+                    token4 = strtok(NULL, ",");
+                    loop++;
+                }
+            }
+            nline++;
+        }
+        fclose(fp);
+    }
+    // message(tipe);
+
+    // WHERE nama='ridho rahman'
+    // WHERE umur=34
+    // dapatkan kondisi WHERE dari okurensi terakhir "WHERE "
+    if (where){
+        memset(buffer, 0, sizeof buffer);
+        strcpy(buffer, query);
+
+        // pisah dengan string WHERE
+        char* token = strstr(buffer, "WHERE");
+
+        // hilangkan "WHERE "
+        token = strrep(token, "WHERE ", "");
+
+        // pindah ke condition
+        strcpy(condition, token);
+
+        // split conditionType dan conditionValue
+        char* tok = strtok(condition, "=");
+        loop = 1;
+        while (tok != NULL){
+            if (loop == 1) strcpy(conditionType, tok);
+            else strcpy(conditionValue, tok);
+            tok = strtok(NULL, "=");
+            loop++;
+        }
+        char *str2 = strrep(conditionValue, "'", "");
+        strcpy(conditionValue, str2);
+    }
+    // message(tipe);
+    // message(table);
+    // message(conditionValue);
+
+    sprintf(folder, "databases/%s/%s.csv", user_data.setDb, table);
+    fp = fopen(folder, "r");
+    if (fp == NULL) {
+      perror("Failed: ");
+      return -1;
+    }
+
+    int curIndex = 1;
+    char buffer2[1024], result[1024];
+    Array a;
+    initArray(&a, 1);  // untuk filter kolom
+    int whereIndex = 0;
+    nline=1;
+
+    // -1 to allow room for NULL terminator for really long string
+    while (fgets(buffer2, 1024 - 1, fp))
+    {
+        // Remove trailing newline
+        buffer2[strcspn(buffer2, "\n")] = 0;
+        // line 1: data type
+        if (nline == 1){
+            curIndex = 1;
+            char *end_str;
+            char* token = strtok_r(buffer2, ",", &end_str);
+            while( token != NULL ) {
+                // ambil index dari kolom yang diselect, masukin array
+                // token2 untuk ngeloop strtok tipe
+                if (where) if (strcmp(conditionType, token) == 0) whereIndex = curIndex;
+                char tipe2[1024];
+                char *end_token;
+                strcpy(tipe2, tipe);
+                char* token2 = strtok_r(tipe2, ",", &end_token);
+                while (token2 != NULL) {
+                    if (strcmp(token, token2)==0)
+                        insertArray(&a, curIndex);
+                    token2 = strtok_r(NULL, ",", &end_token);
+                }
+                token = strtok_r(NULL, ",", &end_str);
+                curIndex++;
+            }
+        }
+        // char msg[1024];
+        // sprintf(msg, "%d", whereIndex);
+        // message(msg);
+        // message(conditionType);message(conditionValue);
+        if(where){
+            if (whereIndex == 0){
+                char msg[1024];
+                sprintf(msg, "Kolom %s tidak ditemukan di tabel %s", conditionType, table);
+                message(msg);
+            }
+        }
+        if (a.used == 0) return -1;
+
+        // cek isi data, kemudian filter sesuai kondisi
+        if (nline > 2){
+            char* token;
+            curIndex = 1;
+            bool startofline = true;
+            token = strtok(buffer2, ",");
+            bool need = true;
+            char buf[1024];
+            memset(buf, 0, sizeof buf);
+            while( token != NULL ) {
+                // filter kolom
+                if(whereIndex == curIndex && where == true){
+                    if(strcmp(token, conditionValue)) need = false;
+                }
+                for (size_t i = 0; i < a.used; i++){
+                    if (a.array[i] == curIndex){ // filterkolom
+                        if (where == true){
+                            // // ketika ketemu kolom yang diberi kondisi . . .
+                            // if (whereIndex == curIndex){
+                            //     // akan dicek apakah sama dengan conditionValue . . . 
+                            //     if (strcmp(token, conditionValue)==0){
+                            //         if (startofline){
+                            //             startofline = false;
+                            //         } else {
+                            //             strcat(buf, ",");
+                            //         }
+                            //         strcat(buf, token);
+                            //     }else {
+                            //         need = false;
+                            //         memset(buf, 0, sizeof buf);
+                            //     } // kalau tidak sama, line ini dimark false
+                            // }else{ // kalau belum ketemu, tulis di buf dulu
+                                if (startofline){
+                                        startofline = false;
+                                } else {
+                                    strcat(buf, ",");
+                                }
+                                strcat(buf, token);
+                        } 
+                        // kalau tidak ada where
+                        else{
+                            if (startofline){
+                                startofline = false;
+                            } else {
+                                strcat(result, ",");
+                            }
+                            strcat(result, token);
+                        }
+                    }
+                }
+
+                token = strtok(NULL, ",");
+                curIndex++;
+            }
+
+            if (where){
+                if (need == true){
+                    strcat(result, buf);
+                    memset(buf, 0, sizeof buf); // reset buf
+                }
+            }else{
+                memset(buf, 0, sizeof buf); // reset buf
+                strcat(result, "\n");
+            }
+        }
+
+        nline++;
+    }
+    message(result);
+
+    // free
+    memset(result, 0, sizeof result);
+    memset(condition, 0, sizeof condition);
+    memset(tipe, 0, sizeof tipe);
+    memset(table, 0, sizeof table);
+    freeArray(&a);
+    fclose(fp);
+    return 1;
+}
+
 void loginsukses()
 {
     char msg[1024], buffer[1024], loc[1024];
@@ -808,6 +1120,12 @@ void loginsukses()
         } else if(strcmp(cmd, "DELETE") == 0) {
             catatLog(buffer);
             delete(buffer);
+        } else if(strcmp(cmd, "UPDATE") == 0) {
+            catatLog(buffer);
+            //updateTabel(buffer);
+        } else if(strcmp(cmd, "SELECT") == 0) {
+            catatLog(buffer);
+            selectFrom(buffer);
         } else {
             message("Query invalid");
         }
