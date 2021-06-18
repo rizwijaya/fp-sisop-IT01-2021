@@ -542,3 +542,387 @@
 2021-06-16 07:44:18:rizqi:DROP COLUMN nama FROM dosen
 2021-06-16 07:44:32:rizqi:DROP COLUMN kontol FROM dosen
 2021-06-16 07:44:42:rizqi:DROP
+2021-06-17 06:28:53:rizqi:SELECT nama,umur FROM dosen
+2021-06-17 06:29:18:rizqi:SELECT nama,umur FROM dosen
+2021-06-17 06:29:29:rizqi:USE yups
+2021-06-17 06:29:39:rizqi:SELECT nama,umur FROM dosen
+2021-06-17 06:34:04:rizqi:SELECT nama FROM dosen
+2021-06-17 06:34:17:rizqi:SELECT nama FROM dosen
+2021-06-17 06:34:33:rizqi:USE yups;
+2021-06-17 06:34:48:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 06:34:55:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 06:55:39:rizqi:USE yups;
+2021-06-17 06:55:47:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 06:55:51:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 06:56:29:rizqi:USE yups;
+2021-06-17 06:56:32:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 06:56:52:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 06:57:39:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 06:58:45:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 06:59:43:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 06:59:54:rizqi:USE yups;
+2021-06-17 07:00:00:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:00:23:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:00:33:rizqi:USE yups;
+2021-06-17 07:00:38:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:01:00:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:01:21:rizqi:USE yups;
+2021-06-17 07:01:24:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:01:58:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:02:09:rizqi:USE yups;
+2021-06-17 07:02:13:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:03:13:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:03:21:rizqi:USE yups;
+2021-06-17 07:03:24:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:03:34:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:04:06:rizqi:USE yups;
+2021-06-17 07:04:09:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:04:21:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:04:33:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:04:39:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:20:52:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:21:17:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:21:32:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:21:41:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:22:52:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:23:36:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:23:45:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:24:07:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:24:20:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:24:40:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:31:24:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:32:16:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:32:26:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:32:35:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:32:38:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:51:11:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 07:55:08:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 08:00:15:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 08:01:01:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 08:01:17:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 08:02:04:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 08:02:19:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 08:02:53:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 08:03:08:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 08:04:24:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 08:08:28:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 11:01:51:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 11:12:53:rizqi:USE yups
+2021-06-17 11:13:04:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 11:13:38:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 11:13:55:rizqi:USE yups;
+2021-06-17 11:13:59:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 11:14:43:rizqi:USE yups;
+2021-06-17 11:14:53:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 11:17:21:rizqi:USE yups;
+2021-06-17 11:17:35:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 11:18:39:rizqi:USE yups;
+2021-06-17 11:18:42:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 11:20:07:rizqi:USE yups;
+2021-06-17 11:20:10:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 11:20:46:rizqi:USE yups;
+2021-06-17 11:20:49:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 11:21:40:rizqi:USE yups;
+2021-06-17 11:21:43:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 11:23:12:rizqi:USE yups;
+2021-06-17 11:23:15:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 11:24:24:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 11:27:37:rizqi:USE yups;
+2021-06-17 11:27:52:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 11:28:43:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 11:28:53:rizqi:USE yups;
+2021-06-17 11:28:56:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 11:29:59:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 11:32:17:rizqi:USE yups;
+2021-06-17 11:32:19:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 11:33:25:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 11:33:35:rizqi:USE yups;
+2021-06-17 11:33:39:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 11:33:56:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 11:34:08:rizqi:USE yups;
+2021-06-17 11:34:13:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 11:36:31:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 11:36:40:rizqi:USE yups;
+2021-06-17 11:36:44:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 11:37:30:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 11:37:39:rizqi:USE yups;
+2021-06-17 11:37:43:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 11:45:49:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 11:45:59:rizqi:USE yups;
+2021-06-17 11:46:17:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 11:47:11:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 11:47:25:rizqi:USE yups;
+2021-06-17 11:47:32:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 11:47:48:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 11:48:04:rizqi:USE yups;
+2021-06-17 11:48:08:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 11:49:32:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 11:50:12:rizqi:USE yups;
+2021-06-17 11:50:20:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 11:51:35:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 11:51:59:rizqi:USE yups;
+2021-06-17 11:52:04:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 11:52:41:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 11:52:53:rizqi:USE yups;
+2021-06-17 11:53:00:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 11:53:10:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 12:12:06:rizqi:USE yups;
+2021-06-17 12:12:11:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 12:12:21:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 12:12:53:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 12:14:06:rizqi:USE yups;
+2021-06-17 12:14:14:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 12:14:26:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 12:16:39:rizqi:SELECT nama,umur FROM dosen
+2021-06-17 12:16:42:rizqi:SELECT nama,umur FROM dosen
+2021-06-17 12:16:59:rizqi:USE yups;
+2021-06-17 12:17:16:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 12:17:23:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 12:17:33:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 12:34:35:rizqi:USE yups;
+2021-06-17 12:34:40:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 12:35:11:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 12:35:21:rizqi:USE yups;
+2021-06-17 12:35:24:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 12:35:48:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 12:35:56:rizqi:USE yups;
+2021-06-17 12:36:00:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 12:36:27:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 12:36:36:rizqi:USE yups;
+2021-06-17 12:36:40:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 12:37:56:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 12:38:08:rizqi:USE yups;
+2021-06-17 12:38:12:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 12:38:16:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=34
+2021-06-17 13:02:32:rizqi:USE yups;
+2021-06-17 13:02:42:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=30
+2021-06-17 13:02:57:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 13:05:13:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 13:05:24:rizqi:USE yups;
+2021-06-17 13:05:29:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=30
+2021-06-17 13:07:19:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=30
+2021-06-17 13:07:39:rizqi:USE yups;
+2021-06-17 13:07:58:rizqi:SELECT nama,gender FROM dosen WHERE umur=30
+2021-06-17 13:08:09:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=30
+2021-06-17 13:08:16:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=30
+2021-06-17 13:08:28:rizqi:USE yups;
+2021-06-17 13:08:34:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 13:08:41:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=30
+2021-06-17 13:08:53:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 13:09:33:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 13:10:04:rizqi:USE yups;
+2021-06-17 13:10:08:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=30
+2021-06-17 13:10:25:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 13:10:31:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 13:35:42:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 13:35:52:rizqi:USE yups;
+2021-06-17 13:36:00:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 13:36:21:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 13:36:40:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 14:06:15:rizqi:USE yups;
+2021-06-17 14:06:19:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:07:24:rizqi:USE yups;
+2021-06-17 14:07:29:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:08:07:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:08:17:rizqi:USE yups;
+2021-06-17 14:08:20:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:08:45:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:08:57:rizqi:USE yups;
+2021-06-17 14:09:00:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:10:19:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:10:30:rizqi:USE yups;
+2021-06-17 14:10:33:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:12:06:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:12:20:rizqi:USE yups;
+2021-06-17 14:12:23:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:12:37:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:12:45:rizqi:USE yups;
+2021-06-17 14:12:48:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:13:11:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 14:16:27:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 14:16:38:rizqi:USE yups;
+2021-06-17 14:16:52:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 14:16:56:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:18:17:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:19:00:rizqi:USE yups;
+2021-06-17 14:19:05:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 14:19:13:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:19:47:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:19:57:rizqi:USE yups;
+2021-06-17 14:20:03:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:20:35:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:20:44:rizqi:USE yups;
+2021-06-17 14:20:48:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:20:56:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:21:38:rizqi:USE yups;
+2021-06-17 14:21:41:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:22:34:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:22:44:rizqi:USE yups;
+2021-06-17 14:22:47:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:23:06:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:24:11:rizqi:USE yups;
+2021-06-17 14:24:14:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:25:04:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:25:15:rizqi:USE yups;
+2021-06-17 14:25:18:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:28:07:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:28:17:rizqi:USE yups;
+2021-06-17 14:28:24:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:28:52:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:29:44:rizqi:USE yups;
+2021-06-17 14:29:47:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:31:16:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:31:27:rizqi:USE yups;
+2021-06-17 14:31:30:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:32:05:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:32:17:rizqi:USE yups;
+2021-06-17 14:32:20:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:36:02:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:36:11:rizqi:USE yups;
+2021-06-17 14:36:14:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:36:55:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:37:05:rizqi:USE yups;
+2021-06-17 14:37:09:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:38:23:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:38:59:rizqi:USE yups;
+2021-06-17 14:39:06:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:39:50:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:40:00:rizqi:USE yups;
+2021-06-17 14:40:09:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:41:20:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:41:31:rizqi:USE yups;
+2021-06-17 14:41:33:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:42:16:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:42:26:rizqi:USE yups;
+2021-06-17 14:42:29:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:42:40:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 14:42:52:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 14:44:38:rizqi:USE yups;
+2021-06-17 14:44:41:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:53:06:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:53:15:rizqi:USE yups;
+2021-06-17 14:53:19:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:54:05:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:54:17:rizqi:USE yups;
+2021-06-17 14:54:20:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:57:18:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=30
+2021-06-17 14:58:44:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=30
+2021-06-17 14:58:54:rizqi:USE yups;
+2021-06-17 14:58:57:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:59:15:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 14:59:25:rizqi:USE yups;
+2021-06-17 14:59:28:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 15:02:49:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 15:02:59:rizqi:USE yups;
+2021-06-17 15:03:04:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 15:04:18:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 15:04:27:rizqi:USE yups;
+2021-06-17 15:04:31:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 15:04:38:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 15:05:45:rizqi:USE yups;
+2021-06-17 15:05:48:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 15:13:02:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 15:13:11:rizqi:USE yups;
+2021-06-17 15:13:15:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 15:13:32:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 15:13:42:rizqi:USE yups;
+2021-06-17 15:13:44:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 15:14:16:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=30
+2021-06-17 15:15:58:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=30
+2021-06-17 15:16:07:rizqi:USE yups;
+2021-06-17 15:16:11:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 15:16:16:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=30
+2021-06-17 15:16:26:rizqi:SELECT nama,umur,gender FROM dosen WHERE id=1
+2021-06-17 15:17:11:rizqi:SELECT nama,umur,gender FROM dosen WHERE gender=male
+2021-06-17 15:19:16:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 15:24:40:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 15:25:09:rizqi:USE yups;
+2021-06-17 15:25:13:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 15:25:29:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 15:25:38:rizqi:USE yups;
+2021-06-17 15:25:41:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 15:25:48:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=30
+2021-06-17 15:25:56:rizqi:SELECT nama,umur,gender FROM dosen WHERE gender-male
+2021-06-17 15:26:08:rizqi:SELECT nama,umur,gender FROM dosen WHERE gender=male
+2021-06-17 15:26:24:rizqi:SELECT nama,umur,gender FROM dosen WHERE id=1
+2021-06-17 15:32:42:rizqi:SELECT nama,umur,gender FROM dosen WHERE id=1
+2021-06-17 15:33:08:rizqi:USE yups;
+2021-06-17 15:33:15:rizqi:SELECT nama,umur,gender FROM dosen WHERE id=1
+2021-06-17 15:33:24:rizqi:SELECT nama,umur,gender FROM dosen WHERE id=2
+2021-06-17 15:33:28:rizqi:SELECT nama,umur,gender FROM dosen WHERE id=2
+2021-06-17 15:34:02:rizqi:USE yups;
+2021-06-17 15:34:08:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 15:34:17:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=30
+2021-06-17 15:34:25:rizqi:SELECT nama,umur,gender FROM dosen WHERE gender=male
+2021-06-17 15:34:32:rizqi:SELECT nama,umur,gender FROM dosen WHERE id=1
+2021-06-17 15:34:40:rizqi:SELECT nama,umur,gender FROM dosen WHERE id=2
+2021-06-17 15:35:38:rizqi:SELECT nama,umur,gender FROM dosen WHERE id=2
+2021-06-17 15:35:48:rizqi:USE yups;
+2021-06-17 15:35:51:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=25
+2021-06-17 15:35:56:rizqi:SELECT nama,umur,gender FROM dosen WHERE umur=30
+2021-06-17 15:36:05:rizqi:SELECT nama,umur,gender FROM dosen WHERE gender=male
+2021-06-17 15:36:11:rizqi:SELECT nama,umur,gender FROM dosen WHERE id=1
+2021-06-17 15:36:19:rizqi:SELECT nama,umur,gender FROM dosen WHERE gender=female
+2021-06-17 15:36:22:rizqi:SELECT nama,umur,gender FROM dosen WHERE gender=female
+2021-06-17 15:54:03:rizqi:USE yups;
+2021-06-17 15:54:13:rizqi:SELECT nama,umur,gender FROM dosen WHERE gender=male
+2021-06-17 15:55:23:rizqi:SELECT * FROM dosen
+2021-06-17 15:55:38:rizqi:SELECT * FROM dosen WHERE gender=male
+2021-06-17 15:55:47:rizqi:SELECT * FROM dosen WHERE gender=male
+2021-06-17 15:56:22:rizqi:USE yups;
+2021-06-17 15:56:31:rizqi:SELECT * FROM dosen
+2021-06-17 15:57:45:rizqi:SELECT * FROM dosen
+2021-06-17 15:57:54:rizqi:USE yups;
+2021-06-17 15:58:07:rizqi:SELECT * FROM dosen
+2021-06-17 15:58:22:rizqi:SELECT * FROM dosen
+2021-06-17 15:58:31:rizqi:USE yups;
+2021-06-17 15:58:37:rizqi:SELECT * FROM dosen
+2021-06-17 15:58:58:rizqi:SELECT * FROM dosen
+2021-06-17 15:59:07:rizqi:USE yups;
+2021-06-17 15:59:29:rizqi:SELECT nama,umur,gender FROM dosen WHERE gender=male
+2021-06-17 15:59:56:rizqi:SELECT * FROM dosen WHERE gender=male
+2021-06-17 16:00:16:rizqi:SELECT nama,umur,gender FROM dosen
+2021-06-17 16:00:27:rizqi:SELECT * FROM dosen
+2021-06-17 16:03:17:rizqi:SELECT * FROM dosen
+2021-06-17 16:03:28:rizqi:USE yups;
+2021-06-17 16:03:33:rizqi:SELECT * FROM dosen
+2021-06-17 16:03:38:rizqi:SELECT nama,umur,gender FROM dosen WHERE gender=male
+2021-06-17 16:04:22:rizqi:SELECT * FROM dosen WHERE gender=male
+2021-06-17 16:04:47:rizqi:SELECT * FROM dosen WHERE gender=male
+2021-06-17 16:04:57:rizqi:USE yups;
+2021-06-17 16:05:12:rizqi:SELECT * FROM dosen WHERE gender=male
+2021-06-17 16:05:50:rizqi:SELECT * FROM dosen WHERE gender=male
+2021-06-17 16:06:01:rizqi:USE yups;
+2021-06-17 16:06:11:rizqi:SELECT * FROM dosen WHERE gender=male
+2021-06-17 16:06:54:rizqi:SELECT * FROM dosen WHERE gender=male
+2021-06-17 16:07:03:rizqi:USE yups;
+2021-06-17 16:07:06:rizqi:SELECT * FROM dosen WHERE gender=male
+2021-06-17 16:07:44:rizqi:SELECT * FROM dosen WHERE gender=male
+2021-06-17 16:07:56:rizqi:USE yups;
+2021-06-17 16:07:59:rizqi:SELECT * FROM dosen WHERE gender=male
+2021-06-17 16:08:11:rizqi:SELECT * FROM dosen
+2021-06-17 16:08:27:rizqi:SELECT * FROM dosen WHERE id=2
+2021-06-17 16:08:29:rizqi:SELECT * FROM dosen WHERE id=2
+2021-06-17 16:08:50:rizqi:USE yups;
+2021-06-17 16:08:54:rizqi:SELECT * FROM dosen WHERE gender=male
+2021-06-17 16:09:22:rizqi:SELECT nama,umur,gender FROM dosen WHERE id=2
+2021-06-17 16:09:33:rizqi:SELECT * FROM dosen
+2021-06-17 16:10:05:rizqi:SELECT nama,umur,gender FROM dosen WHERE nama='ridho rahman'
+2021-06-17 16:10:13:rizqi:SELECT nama,umur,gender FROM dosen WHERE nama='ridho rahman'
+2021-06-17 16:11:29:rizqi:USE yups;
+2021-06-17 16:11:38:rizqi:SELECT nama,umur,gender FROM dosen WHERE nama='ridho rahman'
+2021-06-17 16:11:56:rizqi:SELECT nama,umur,gender FROM dosen WHERE nama='ridho rahman'
+2021-06-17 16:12:04:rizqi:USE yups;
+2021-06-17 16:12:09:rizqi:SELECT nama,umur,gender FROM dosen WHERE nama='ridho rahman'
+2021-06-17 16:13:22:rizqi:SELECT nama,umur,gender FROM dosen WHERE nama='ridho rahman'
+2021-06-17 16:14:41:rizqi:USE yups;
+2021-06-17 16:14:44:rizqi:SELECT nama,umur,gender FROM dosen WHERE nama='ridho rahman'
+2021-06-17 16:14:49:rizqi:SELECT nama,umur,gender FROM dosen WHERE nama='ridho rahman'
+2021-06-17 16:15:16:rizqi:USE yups;
+2021-06-17 16:15:20:rizqi:SELECT nama,umur,gender FROM dosen WHERE nama='ridho rahman'
+2021-06-17 16:15:39:rizqi:SELECT nama,umur,gender FROM dosen WHERE id=2
+2021-06-17 16:15:48:rizqi:SELECT nama,umur,gender FROM dosen WHERE gender=male
+2021-06-17 16:16:14:rizqi:SELECT umur,nama FROM dosen
+2021-06-17 16:16:36:rizqi:SELECT * FROM dosen
+2021-06-17 16:16:59:rizqi:SELECT * FROM dosen WHERE gender=male
+2021-06-17 16:19:35:rizqi:SELECT * FROM dosen WHERE gender=male
